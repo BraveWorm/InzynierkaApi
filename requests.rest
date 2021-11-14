@@ -1,0 +1,24 @@
+GET http://localhost:3001/api/
+
+###
+GET http://localhost:3001/api/users
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjM2OTIzMTQzLCJleHAiOjE2MzcwMDk1NDN9.CZJOsdx51kUhPyklyqXMoEWlsBGgDx8H7iaW9kZuGDg
+
+###
+POST http://localhost:3001/api/auth/login
+content-type: "application/json"
+
+{
+    "email": "adam@overment.com",
+    "password": "123456"
+}
+
+
+###
+POST http://localhost:3001/api/auth/refresh
+content-type: application/json
+
+{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjM2OTI1OTQ2LCJleHAiOjE2Mzc0NTE1NDZ9.LCvP4WusxDMoFfkHENMItgXr_bH7XTUALLTMLRo9vxE"
+}
+
