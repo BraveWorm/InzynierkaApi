@@ -2,15 +2,20 @@ GET http://localhost:3001/api/
 
 ###
 GET http://localhost:3001/api/users
+content-type: application/json
+
+{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjM2OTk4MjMyLCJleHAiOjE2MzcwODQ2MzJ9.nQll57Nt2n06dVpk9e9rfTiPyzUBH4zrTQXJLq4S3B4"
+}
 
 
 ###
 POST http://localhost:3001/api/auth/login
-content-type: "application/json"
+content-type: application/json
 
 {
-    "email": "adam@overment.com",
-    "password": "123456"
+    "email": "user8@test.com",
+    "password": "user6password"
 }
 
 
@@ -22,3 +27,12 @@ content-type: application/json
     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjM2OTI1OTQ2LCJleHAiOjE2Mzc0NTE1NDZ9.LCvP4WusxDMoFfkHENMItgXr_bH7XTUALLTMLRo9vxE"
 }
 
+###
+POST  http://localhost:3001/api/auth/registration
+content-type: application/json
+
+{
+    "email": "user8@test.com",
+    "password": "user6password"
+    
+}
