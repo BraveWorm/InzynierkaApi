@@ -20,12 +20,25 @@ app.get('/api/', (req, res) => res.send('OK!'))
 
 
 // User
-app.get('/api/users', async (req, res) => {
-    //app.get('/api/users', async (req, res) => {
-    const users = await User.query()
+app.get('/api/userInfo', async (req, res) => {
+
+
+    const users = await knex("users")
+        .select('users.email','users.created_at','users.updated_at')
+        .where({ email: req.body.email })
 
     res.send(users)
 })
+/*
+app.post('/api/users',  (req, res, next) => {
+    //app.get('/api/users', async (req, res) => {
+    //const users = await User.query()
+    knex("users")
+        .where({ email: request.body.email })
+
+
+    res.send(users)
+})*/
 
 app.post("/api/auth/registration", (request, response, next) => {
     bcrypt.hash(request.body.password, 8)
@@ -44,8 +57,8 @@ app.post("/api/auth/registration", (request, response, next) => {
 })
 
 
-/*
-app.post('/api/auth/login', (req, res) => {
+
+/*app.post('/api/auth/login2', (req, res) => {
     const email = req.body.email
     const password = req.body.password
 
@@ -62,9 +75,9 @@ app.post('/api/auth/login', (req, res) => {
     res.send({ accessToken, refreshToken})
 })*/
 
-app.post('/api/auth/login', (request, response) => {
+app.post('/api/auth/login', (request, response, mext) => {
     knex("users")
-        .where({ email: request.body.email })//!!!!!
+        .where({ email: request.body.email })
         .first()
         .then(users => {
             if (!users) {
@@ -73,25 +86,28 @@ app.post('/api/auth/login', (request, response) => {
                 })
             } else {
                 return bcrypt
-                    .compare(request.body.password, users.password)//!!!!
+                    .compare(request.body.password, users.password)
                     .then(isAuthenticated => {
                         if (!isAuthenticated) {
                             response.status(401).json({
                                 error: "Unauthorized Access!"
                             })
                         } else {
-                            /*return jwt.sign(users, process.env.TOKEN_SECRET, (error, token) => {
+                            //users.password = null
+                            const payload = { email: users.email}
+                            return jwt.sign(payload, process.env.TOKEN_SECRET, (error, token) => {
                                response.status(200).json({token})
-                            })*/
-                            const accessToken = jwt.sign({ id: 1 }, users, { expiresIn: 86400 })
+                            })
+                            
+                            /*const accessToken = jwt.sign({ id: 1 }, users, { expiresIn: 86400 })
                             const refreshToken = jwt.sign({ id: 1 }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: 525600 })
 
-                            res.cookie('JWT', accessToken, {
+                            response.cookie('JWT', accessToken, {
                                 maxAge: 8640000,
                                 httpOnly: true,
                             })
 
-                            res.send({ accessToken, refreshToken })
+                            response.send({ accessToken, refreshToken })*/
                         }
                     })
             }
@@ -116,6 +132,10 @@ app.post('/api/auth/refresh', async (req, res) => {
     const accessToken = jwt.sign({ id: 1 }, process.env.TOKEN_SECRET, { expiresIn: 86400 })
 
     res.send({ accessToken })
+})
+
+app.get('/api/payload', (req, res) => {
+
 })
 
 function authenticate(req, res, next) {

@@ -10,14 +10,32 @@ content-type: application/json
 
 
 ###
+GET http://localhost:3001/api/userInfo
+content-type: application/json
+
+{
+    "email": "user1@test.com"
+}
+
+
+
+###
 POST http://localhost:3001/api/auth/login
+content-type: application/json
+
+{
+    "email": "user3@test.com",
+    "password": "user3password"
+}
+
+###
+POST http://localhost:3001/api/auth/login2
 content-type: application/json
 
 {
     "email": "user8@test.com",
     "password": "user6password"
 }
-
 
 ###
 POST http://localhost:3001/api/auth/refresh
