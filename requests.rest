@@ -2,17 +2,48 @@ GET http://localhost:3001/api/
 
 ###
 GET http://localhost:3001/api/users
+content-type: application/json
+
+{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjM2OTk4MjMyLCJleHAiOjE2MzcwODQ2MzJ9.nQll57Nt2n06dVpk9e9rfTiPyzUBH4zrTQXJLq4S3B4"
+}
+
+
+###
+GET http://localhost:3001/api/userInfo
+content-type: application/json
+
+{
+    "email": "user1@test.com"
+}
+
+###
+GET http://localhost:3001/api/userInfo
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImVtYWlsIjoidXNlcjNAdGVzdC5jb20ifSwiaWF0IjoxNjM3MTUxODk0LCJleHAiOjE2MzcyMzgyOTR9.Znr9OuAAIVyneZ9za3tpkaM3plVmhnWlowqyge-HvnM
+content-type: application/json
+
+{
+    "email": "user3@test.com"
+}
 
 
 ###
 POST http://localhost:3001/api/auth/login
-content-type: "application/json"
+content-type: application/json
 
 {
-    "email": "adam@overment.com",
-    "password": "123456"
+    "email": "user3@test.com",
+    "password": "user3password"
 }
 
+###
+POST http://localhost:3001/api/auth/login2
+content-type: application/json
+
+{
+    "email": "user8@test.com",
+    "password": "user6password"
+}
 
 ###
 POST http://localhost:3001/api/auth/refresh
@@ -22,3 +53,20 @@ content-type: application/json
     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjM2OTI1OTQ2LCJleHAiOjE2Mzc0NTE1NDZ9.LCvP4WusxDMoFfkHENMItgXr_bH7XTUALLTMLRo9vxE"
 }
 
+###
+POST  http://localhost:3001/api/auth/registration
+content-type: application/json
+
+{
+    "email": "user15@test.com",
+    "password": "user15password"    
+}
+
+###
+POST  http://localhost:3001/api/test
+content-type: application/json
+
+{
+    "email": "user13@test.com",
+    "password": "user13password"    
+}
