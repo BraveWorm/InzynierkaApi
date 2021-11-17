@@ -1,7 +1,7 @@
 import dotenv from 'dotenv'
 import jwt from 'jsonwebtoken'
 import express from 'express'
-import cookieParser from 'cookie-parser'
+//import cookieParser from 'cookie-parser'
 import User from './models/User'
 import knex from './config/database'
 
@@ -13,67 +13,78 @@ const app = express()
 app.use(express.json())
 
 app.use(express.json())
-app.use(cookieParser())
+//app.use(cookieParser())
 app.use(express.urlencoded({ extended: true }))
 
 app.get('/api/', (req, res) => res.send('OK!'))
 
 
 // User
-app.get('/api/userInfo', async (req, res) => {
+app.get('/api/userInfo', authenticate, async (req, res) => {
+    if (!(JSON.parse(Buffer.from(req.headers['authorization'].split(".")[1], "base64url")).payload.email === req.body.email)) // Compare email from JWT and email from req
+    {
+        res.status(401).json({
+            error: "Unauthorized Access!"
+        })
+    } else {
+        const users = await knex("users")
+            .select('users.email', 'users.created_at', 'users.updated_at')
+            .where({ email: req.body.email })
 
-
-    const users = await knex("users")
-        .select('users.email','users.created_at','users.updated_at')
-        .where({ email: req.body.email })
-
-    res.send(users)
+        res.send(users)
+    }
 })
-/*
-app.post('/api/users',  (req, res, next) => {
-    //app.get('/api/users', async (req, res) => {
-    //const users = await User.query()
-    knex("users")
-        .where({ email: request.body.email })
 
+app.post("/api/auth/registration", (req, res, next) => {
+    if ( !req.body.password || !req.body.email){
+        return res.send('wrong data')
+    } 
 
-    res.send(users)
-})*/
-
-app.post("/api/auth/registration", (request, response, next) => {
-    bcrypt.hash(request.body.password, 8)
+    bcrypt.hash(req.body.password, 8)
         .then(hashedPassword => {
-            return knex("users").insert({
-                //id: "", 
-                email: request.body.email,
-                password: hashedPassword
-            })
-                .returning(["id", "email"])
-                .then(users => {
-                    response.json(users[0])
+            knex('users')
+                .select()
+                .where('email', req.body.email)
+                .then(function (rows) {
+                    if (rows.length === 0) {
+                        return knex("users").insert({
+                            //id: "", 
+                            email: req.body.email,
+                            password: hashedPassword
+                        })
+                        .then(res.send( 'successful registration ' ))
+
+                    } else {
+                        res.send(' email already in use ')
+                    }
                 })
-                .catch(error => next(error))
+                .catch(function (ex) {
+                    // you can find errors here.
+                    res.send(' err ')
+                })
         })
 })
 
 
 
-/*app.post('/api/auth/login2', (req, res) => {
-    const email = req.body.email
-    const password = req.body.password
+app.post("/api/isEmailFree", async (req, res) => {
 
-    // const validPassword = await bcrypt.compare(password, user[0].password)
 
-    const accessToken = jwt.sign({ id: 1}, users, { expiresIn: 86400 })
-    const refreshToken = jwt.sign({ id: 1}, process.env.REFRESH_TOKEN_SECRET, { expiresIn: 525600 })
+    return knex('users')
+        .select()
+        .where('email', req.body.email)
+        .then(function (rows) {
+            if (rows.length === 0) {
+                res.send( 'email free' )
+            } else {
+                res.send( 'email already in use' )
+            }
+        })
+        .catch(function (ex) {
+            res.send(' err ')
+        })
+})
 
-    res.cookie('JWT', accessToken, {
-        maxAge:8640000,
-        httpOnly: true,
-    })
-
-    res.send({ accessToken, refreshToken})
-})*/
 
 app.post('/api/auth/login', (request, response, mext) => {
     knex("users")
@@ -93,21 +104,9 @@ app.post('/api/auth/login', (request, response, mext) => {
                                 error: "Unauthorized Access!"
                             })
                         } else {
-                            //users.password = null
-                            const payload = { email: users.email}
-                            return jwt.sign(payload, process.env.TOKEN_SECRET, (error, token) => {
-                               response.status(200).json({token})
-                            })
-                            
-                            /*const accessToken = jwt.sign({ id: 1 }, users, { expiresIn: 86400 })
-                            const refreshToken = jwt.sign({ id: 1 }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: 525600 })
-
-                            response.cookie('JWT', accessToken, {
-                                maxAge: 8640000,
-                                httpOnly: true,
-                            })
-
-                            response.send({ accessToken, refreshToken })*/
+                            const payload = { email: users.email }
+                            const accessToken = jwt.sign({ payload }, process.env.TOKEN_SECRET, { expiresIn: 86400 })
+                            response.send({ accessToken })
                         }
                     })
             }
@@ -139,18 +138,19 @@ app.get('/api/payload', (req, res) => {
 })
 
 function authenticate(req, res, next) {
-    // const authHeader = req.headers['authorization']
-    // const token = authHeader && authHeader.split(' ')[1]
+    const authHeader = req.headers['authorization']
+    const token = authHeader && authHeader.split(' ')[1]
 
-    if (token === null) return res.sendStatus(401)
+    if (token === null) return res.status(403).send("A token is required for authentication");
 
     jwt.verify(token, process.env.TOKEN_SECRET, (err, user) => {
-        if (err) return res.sendStatus(403)
+        if (err) return res.status(401).send("Invalid Token")
 
         req.user = user
         next()
     })
 }
+
 
 app.listen(3001, () => {
     console.log('Server is up!')
