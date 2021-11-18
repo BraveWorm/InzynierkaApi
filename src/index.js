@@ -5,7 +5,13 @@ import express from 'express'
 import User from './models/User'
 import knex from './config/database'
 
+
+
 dotenv.config()
+
+const https = require('https')
+const path = require('path')
+const fs = require('fs')
 
 const bcrypt = require('bcrypt')
 const app = express()
@@ -86,7 +92,7 @@ app.post("/api/isEmailFree", async (req, res) => {
 })
 
 
-app.post('/api/auth/login', (request, response, mext) => {
+app.post('/api/auth/login', (request, response, next) => {
     knex("users")
         .where({ email: request.body.email })
         .first()
@@ -152,6 +158,13 @@ function authenticate(req, res, next) {
 }
 
 
-app.listen(3001, () => {
+/*app.listen(3001, () => {
     console.log('Server is up!!')
-})
+})*/
+
+const sslServer = https.createServer({
+    key: fs.readFileSync(path.join(__dirname, 'cert', 'key.pem')),
+    cert: fs.readFileSync(path.join(__dirname, 'cert', 'cert.pem'))
+}, app)
+
+sslServer.listen(3443, () => console.log('SSL server runing on port 3443!'))
