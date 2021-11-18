@@ -25,6 +25,16 @@ app.use(express.urlencoded({ extended: true }))
 app.get('/api/', (req, res) => res.send('OK!'))
 
 
+// CORS
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', '*');
+    if(req.method === 'OPTIONS'){
+        res.header('Access-Control-Allow-Methods', '*');
+        return res.status(200).json({});
+    }
+});
+
 // User
 app.get('/api/userInfo', authenticate, async (req, res) => {
     if (!(JSON.parse(Buffer.from(req.headers['authorization'].split(".")[1], "base64url")).payload.email === req.body.email)) // Compare email from JWT and email from req
