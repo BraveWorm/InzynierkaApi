@@ -153,5 +153,5 @@ function authenticate(req, res, next) {
 
 
 app.listen(3001, () => {
-    console.log('Server is up!!!!')
+    console.log('Server is up!!')
 })
