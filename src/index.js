@@ -106,31 +106,36 @@ app.post("/api/isEmailFree", async (req, res) => {
 })
 
 
-app.post('/api/auth/login', (request, response, next) => {
-    knex("users")
-        .where({ email: request.body.email })
-        .first()
-        .then(users => {
-            if (!users) {
-                response.status(401).json({
-                    error: "No users by that name"
-                })
-            } else {
-                return bcrypt
-                    .compare(request.body.password, users.password)
-                    .then(isAuthenticated => {
-                        if (!isAuthenticated) {
-                            response.status(401).json({
-                                error: "Unauthorized Access!"
-                            })
-                        } else {
-                            const payload = { email: users.email }
-                            const accessToken = jwt.sign({ payload }, process.env.TOKEN_SECRET, { expiresIn: 86400 })
-                            response.send({ accessToken })
-                        }
+app.post('/api/auth/login', async (req, res, next) => {
+    try {
+        await knex("users")
+            .where({ email: req.body.email })
+            .first()
+            .then(users => {
+                if (!users) {
+                    res.status(401).json({
+                        error: "No users by that name"
                     })
-            }
-        })
+                } else {
+                    return bcrypt
+                        .compare(req.body.password, users.password)
+                        .then(isAuthenticated => {
+                            if (!isAuthenticated) {
+                                res.status(401).json({
+                                    error: "Unauthorized Access!"
+                                })
+                            } else {
+                                const payload = { email: users.email }
+                                const accessToken = jwt.sign({ payload }, process.env.TOKEN_SECRET, { expiresIn: 86400 })
+                                res.send({ accessToken })
+                            }
+                        })
+                }
+            })
+        } catch (err) {
+            return res.sendStatus(403)
+        }
+
 })
 
 app.post('/api/auth/refresh', async (req, res) => {
