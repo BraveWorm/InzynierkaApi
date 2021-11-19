@@ -22,18 +22,22 @@ app.use(express.json())
 //app.use(cookieParser())
 app.use(express.urlencoded({ extended: true }))
 
+// CORS
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', 'http://localhost:4200');
+    res.header('Access-Control-Allow-Headers', "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+    res.header('Access-Control-Allow-Credentials', true);
+    if(req.method === 'OPTIONS'){
+        res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+        return res.status(200).json({});
+    }
+    next();
+});
+
+
 app.get('/api/', (req, res) => res.send('OK!'))
 
 
-// CORS
-app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Headers', '*');
-    if(req.method === 'OPTIONS'){
-        res.header('Access-Control-Allow-Methods', '*');
-        return res.status(200).json({});
-    }
-});
 
 // User
 app.get('/api/userInfo', authenticate, async (req, res) => {
