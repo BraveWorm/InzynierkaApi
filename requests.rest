@@ -1,7 +1,7 @@
-GET http://localhost:3001/api/
+GET https://localhost:3443/api/
 
 ###
-GET http://localhost:3001/api/users
+GET https://localhost:3443/api/users
 content-type: application/json
 
 {
@@ -10,7 +10,7 @@ content-type: application/json
 
 
 ###
-GET http://localhost:3001/api/userInfo
+GET https://localhost:3443/api/userInfo
 content-type: application/json
 
 {
@@ -18,8 +18,8 @@ content-type: application/json
 }
 
 ###
-GET http://localhost:3001/api/userInfo
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImVtYWlsIjoidXNlcjNAdGVzdC5jb20ifSwiaWF0IjoxNjM3MTUxODk0LCJleHAiOjE2MzcyMzgyOTR9.Znr9OuAAIVyneZ9za3tpkaM3plVmhnWlowqyge-HvnM
+GET https://localhost:3443/api/userInfo
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImVtYWlsIjoidXNlcjNAdGVzdC5jb20ifSwiaWF0IjoxNjM3MjY1NzIxLCJleHAiOjE2MzczNTIxMjF9.qGb2SKA9cDdN3atHWiVVEEkrLyUvr0g0VXa1bc9cszw
 content-type: application/json
 
 {
@@ -28,7 +28,7 @@ content-type: application/json
 
 
 ###
-POST http://localhost:3001/api/auth/login
+POST https://localhost:3443/api/auth/login
 content-type: application/json
 
 {
@@ -36,17 +36,9 @@ content-type: application/json
     "password": "user3password"
 }
 
-###
-POST http://localhost:3001/api/auth/login2
-content-type: application/json
-
-{
-    "email": "user8@test.com",
-    "password": "user6password"
-}
 
 ###
-POST http://localhost:3001/api/auth/refresh
+POST https://localhost:3443/api/auth/refresh
 content-type: application/json
 
 {
@@ -54,19 +46,18 @@ content-type: application/json
 }
 
 ###
-POST  http://localhost:3001/api/auth/registration
+POST  https://localhost:3443/api/auth/registration
 content-type: application/json
 
 {
-    "email": "user15@test.com",
-    "password": "user15password"    
+    "email": "user17@test.com",
+    "password": "user17password"    
 }
 
 ###
-POST  http://localhost:3001/api/test
+POST  https://localhost:3443/api/isEmailFree
 content-type: application/json
 
 {
-    "email": "user13@test.com",
-    "password": "user13password"    
+    "email": "user13@test.com" 
 }
