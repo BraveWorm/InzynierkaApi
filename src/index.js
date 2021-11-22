@@ -12,18 +12,19 @@ dotenv.config()
 const https = require('https')
 const path = require('path')
 const fs = require('fs')
+const cors = require('cors')
 
 const bcrypt = require('bcrypt')
 const app = express()
 
 app.use(express.json())
-
+app.use(cors())
 app.use(express.json())
 //app.use(cookieParser())
 app.use(express.urlencoded({ extended: true }))
 
 // CORS
-app.use((req, res, next) => {
+/*app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', 'http://localhost:4200');
     res.header('Access-Control-Allow-Headers', "Origin, X-Requested-With, Content-Type, Accept, Authorization");
     res.header('Access-Control-Allow-Credentials', true);
@@ -32,7 +33,7 @@ app.use((req, res, next) => {
         return res.status(200).json({});
     }
     next();
-});
+});*/
 
 
 app.get('/api/', (req, res) => res.send('OK!'))
