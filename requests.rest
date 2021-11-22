@@ -19,7 +19,7 @@ content-type: application/json
 
 ###
 GET https://localhost:3443/api/userInfo
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImVtYWlsIjoidXNlcjNAdGVzdC5jb20ifSwiaWF0IjoxNjM3MjY1NzIxLCJleHAiOjE2MzczNTIxMjF9.qGb2SKA9cDdN3atHWiVVEEkrLyUvr0g0VXa1bc9cszw
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImVtYWlsIjoidXNlcjNAdGVzdC5jb20ifSwiaWF0IjoxNjM3NTkxNzczLCJleHAiOjE2Mzc2NzgxNzN9.C-s8RZ3UiUmr5vVx1WEYUZnbIjErZtA7IvlYuKATq3s
 content-type: application/json
 
 {
@@ -36,6 +36,15 @@ content-type: application/json
     "password": "user3password"
 }
 
+###
+POST  https://localhost:3443/api/auth/registration
+content-type: application/json
+
+{
+    "email": "user19@test.com",
+    "password": "user19password"    
+}
+
 
 ###
 POST https://localhost:3443/api/auth/refresh
@@ -45,14 +54,6 @@ content-type: application/json
     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjM2OTI1OTQ2LCJleHAiOjE2Mzc0NTE1NDZ9.LCvP4WusxDMoFfkHENMItgXr_bH7XTUALLTMLRo9vxE"
 }
 
-###
-POST  https://localhost:3443/api/auth/registration
-content-type: application/json
-
-{
-    "email": "user17@test.com",
-    "password": "user17password"    
-}
 
 ###
 POST  https://localhost:3443/api/isEmailFree
