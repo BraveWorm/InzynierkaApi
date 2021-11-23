@@ -4,7 +4,7 @@ exports.up = function(knex) {
         table.increments('id').primary()
         table.string('name')
         table.string('avatar')
-        table.text('opis')
+        table.text('description')
 
         table.integer('user_id').unsigned().unique().notNull()
         table.foreign('user_id').references('users.id')

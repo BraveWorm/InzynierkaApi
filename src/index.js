@@ -4,8 +4,7 @@ import express from 'express'
 //import cookieParser from 'cookie-parser'
 import User from './models/User'
 import knex from './config/database'
-
-
+//var authenticate = require('./Utils/authenticate');
 
 dotenv.config()
 
@@ -16,7 +15,7 @@ const cors = require('cors')
 const bcrypt = require('bcrypt')
 const app = express()
 const auth = require("./routes/auth")
-
+const profile = require("./routes/profile")
 
 //app.use(express.json())
 app.use(cors())
@@ -26,13 +25,13 @@ app.use(express.urlencoded({ extended: true }))
 
 
 app.use("/api/auth", auth);
-
-
+app.use("/api/profile", profile);
 
 app.get('/api/', (req, res) => res.send('OK!'))
 
 // User
-app.get('/api/userInfo', authenticate, async (req, res) => {
+app.get('/api/userInfo', authenticate,  async (req, res, next) => {
+    
     if (!(JSON.parse(Buffer.from(req.headers['authorization'].split(".")[1], "base64url")).payload.email === req.body.email)) // Compare email from JWT and email from req
     {
         res.status(401).json({

@@ -16,7 +16,7 @@ router.post("/registration", async (req, res) => {
             return res.send('wrong data')
         }
 
-        bcrypt.hash(req.body.password, 8)
+        await bcrypt.hash(req.body.password, 8)
             .then(hashedPassword => {
                 knex('users')
                     .select()
