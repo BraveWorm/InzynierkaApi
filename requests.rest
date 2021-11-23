@@ -41,8 +41,8 @@ POST  https://localhost:3443/api/auth/registration
 content-type: application/json
 
 {
-    "email": "user19@test.com",
-    "password": "user19password"    
+    "email": "user1@test.com",
+    "password": "user8password"    
 }
 
 

@@ -9,34 +9,59 @@ let router = express.Router();
     next();
 })*/
 
-router.post("/registration", (req, res) => {
+router.post("/registration", async (req, res) => {
     if ( !req.body.password || !req.body.email){
         return res.send('wrong data')
     } 
 
-    bcrypt.hash(req.body.password, 8)
-        .then(hashedPassword => {
-            knex('users')
-                .select()
-                .where('email', req.body.email)
-                .then(function (rows) {
-                    if (rows.length === 0) {
-                        return knex("users").insert({
-                            //id: "", 
-                            email: req.body.email,
-                            password: hashedPassword
-                        })
-                        .then(res.send( 'successful registration ' ))
+        bcrypt.hash(req.body.password, 8)
+            .then(hashedPassword => {
+                knex('users')
+                    .select()
+                    .where('email', req.body.email)
+                    .then(function (rows) {
+                        if (rows.length === 0) {
+                            knex("users")
+                            //.returning("id")
+                            .insert({
+                                //id: "", 
+                                email: req.body.email,
+                                password: hashedPassword
+                            })// res.send( 'successful registration ' )
+                            .then( (rows) =>{
+                                knex('profiles').insert({
+                                    user_id: rows
+                                })
+                                .then(res.send( 'successful registration' ))
+                            })
 
-                    } else {
-                        res.send(' email already in use ')
-                    }
-                })
-                .catch(function (ex) {
-                    // you can find errors here.
-                    res.send(' err ')
-                })
-        })
+                        } else {
+                            return res.send(' email already in use ')
+                        }
+                    })
+                    .catch(function (ex) {
+                        // you can find errors here.
+                        res.send(' err ')
+                    })
+            })
+
+            /*const promise = knex('users')
+            .select('users.id')
+            .where('email', req.body.email)
+
+            promise
+             .then(
+                knex('profiles')
+                    .insert({
+                        user_id: knex('users')
+                        .select('users.id')
+                        .where('email', req.body.email)
+                    })
+            )
+            .then(console.log( 'successful profile insert' ))*/
+    /*} catch (err) {
+        console.error('outer', err.message);
+    }*/
 })
 
 
