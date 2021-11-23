@@ -10,9 +10,11 @@ let router = express.Router();
 })*/
 
 router.post("/registration", async (req, res) => {
-    if ( !req.body.password || !req.body.email){
-        return res.send('wrong data')
-    } 
+
+    try {
+        if (!req.body.password || !req.body.email) {
+            return res.send('wrong data')
+        }
 
         bcrypt.hash(req.body.password, 8)
             .then(hashedPassword => {
@@ -22,18 +24,18 @@ router.post("/registration", async (req, res) => {
                     .then(function (rows) {
                         if (rows.length === 0) {
                             knex("users")
-                            //.returning("id")
-                            .insert({
-                                //id: "", 
-                                email: req.body.email,
-                                password: hashedPassword
-                            })// res.send( 'successful registration ' )
-                            .then( (rows) =>{
-                                knex('profiles').insert({
-                                    user_id: rows
+                                //.returning("id")
+                                .insert({
+                                    //id: "", 
+                                    email: req.body.email,
+                                    password: hashedPassword
+                                })// res.send( 'successful registration ' )
+                                .then((rows) => {
+                                    knex('profiles').insert({
+                                        user_id: rows
+                                    })
+                                        .then(res.send('successful registration'))
                                 })
-                                .then(res.send( 'successful registration' ))
-                            })
 
                         } else {
                             return res.send(' email already in use ')
@@ -44,24 +46,9 @@ router.post("/registration", async (req, res) => {
                         res.send(' err ')
                     })
             })
-
-            /*const promise = knex('users')
-            .select('users.id')
-            .where('email', req.body.email)
-
-            promise
-             .then(
-                knex('profiles')
-                    .insert({
-                        user_id: knex('users')
-                        .select('users.id')
-                        .where('email', req.body.email)
-                    })
-            )
-            .then(console.log( 'successful profile insert' ))*/
-    /*} catch (err) {
-        console.error('outer', err.message);
-    }*/
+    } catch (err) {
+        return res.sendStatus(403)
+    }
 })
 
 
@@ -91,9 +78,9 @@ router.post('/login', async (req, res) => {
                         })
                 }
             })
-        } catch (err) {
-            return res.sendStatus(403)
-        }
+    } catch (err) {
+        return res.sendStatus(403)
+    }
 
 })
 
