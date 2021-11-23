@@ -15,7 +15,8 @@ const cors = require('cors')
 const bcrypt = require('bcrypt')
 const app = express()
 const auth = require("./routes/auth")
-const profile = require("./routes/profile")
+const profiles = require("./routes/profiles")
+const sets = require("./routes/sets")
 
 //app.use(express.json())
 app.use(cors())
@@ -25,7 +26,8 @@ app.use(express.urlencoded({ extended: true }))
 
 
 app.use("/api/auth", auth);
-app.use("/api/profile", profile);
+app.use("/api/profiles", profiles);
+app.use("/api/sets", sets);
 
 app.get('/api/', (req, res) => res.send('OK!'))
 

@@ -6,7 +6,7 @@ exports.up = function (knex) {
         table.string('setDescription')
         table.integer('setPortion').unsigned()
 
-        table.integer('user_id').unsigned().unique().notNull()
+        table.integer('user_id').unsigned().notNull()
         table.foreign('user_id').references('users.id')
 
         table.timestamps(false, true)

@@ -15,7 +15,7 @@ router.get("/", authenticate, async (req, res) => {
 router.post("/", authenticate, async (req, res) => {
     if (!(JSON.parse(Buffer.from(req.headers['authorization'].split(".")[1], "base64url")).payload.email === req.body.email)) // Compare email from JWT and email from req
         return res.status(401).json({ error: "Unauthorized Access!" })
-    return knex('profiles')
+    return await knex('profiles')
         .where({
             user_id: knex('users').select('id')
                 .where({ email: req.body.email })

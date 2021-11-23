@@ -73,16 +73,16 @@ content-type: application/json
 }
 
 ###
-GET  https://localhost:3443/api/profile
+GET  https://localhost:3443/api/profiles
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImVtYWlsIjoidXNlcjNAdGVzdC5jb20ifSwiaWF0IjoxNjM3NjY4NjA1LCJleHAiOjE2Mzc3NTUwMDV9.0fFOPL9kCwxUj9SP9ir5n_rjKkH25ss52ht7GWdwnms
 content-type: application/json
 
 {
-    "email": "user1@test.com"
+    "email": "user3@test.com"
 }
 
 ###
-POST  https://localhost:3443/api/profile
+POST  https://localhost:3443/api/profiles
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImVtYWlsIjoidXNlcjNAdGVzdC5jb20ifSwiaWF0IjoxNjM3NjY4NjA1LCJleHAiOjE2Mzc3NTUwMDV9.0fFOPL9kCwxUj9SP9ir5n_rjKkH25ss52ht7GWdwnms
 content-type: application/json
 
@@ -91,4 +91,13 @@ content-type: application/json
     "name": "name3",
     "avatar": null,
     "description": "description3"
+}
+
+###
+GET   https://localhost:3443/api/sets/allUserSets
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImVtYWlsIjoidXNlcjNAdGVzdC5jb20ifSwiaWF0IjoxNjM3NjY4NjA1LCJleHAiOjE2Mzc3NTUwMDV9.0fFOPL9kCwxUj9SP9ir5n_rjKkH25ss52ht7GWdwnms
+content-type: application/json
+
+{
+    "email": "user3@test.com"
 }
