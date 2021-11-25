@@ -19,7 +19,7 @@ content-type: application/json
 
 ###
 GET https://localhost:3443/api/userInfo
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImVtYWlsIjoidXNlcjNAdGVzdC5jb20ifSwiaWF0IjoxNjM3NjY4NjA1LCJleHAiOjE2Mzc3NTUwMDV9.0fFOPL9kCwxUj9SP9ir5n_rjKkH25ss52ht7GWdwnms
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImVtYWlsIjoidXNlcjNAdGVzdC5jb20ifSwiaWF0IjoxNjM3Nzk0MDcxLCJleHAiOjE2Mzc4ODA0NzF9.q6oUqLmRpJTXs8f67bmTeaY6CqHH-G_WCfwDvTyt8Xs
 content-type: application/json
 
 {
@@ -63,18 +63,10 @@ content-type: application/json
     "email": "user13@test.com" 
 }
 
-###
-GET  https://localhost:3443/api/profile
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImVtYWlsIjoidXNlcjNAdGVzdC5jb20ifSwiaWF0IjoxNjM3NjY4NjA1LCJleHAiOjE2Mzc3NTUwMDV9.0fFOPL9kCwxUj9SP9ir5n_rjKkH25ss52ht7GWdwnms
-content-type: application/json
 
-{
-    "email": "user1@test.com" 
-}
-
-###
-GET  https://localhost:3443/api/profiles
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImVtYWlsIjoidXNlcjNAdGVzdC5jb20ifSwiaWF0IjoxNjM3NjY4NjA1LCJleHAiOjE2Mzc3NTUwMDV9.0fFOPL9kCwxUj9SP9ir5n_rjKkH25ss52ht7GWdwnms
+### TODO: walidacja 
+GET  https://localhost:3443/api/profiles 
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImVtYWlsIjoidXNlcjNAdGVzdC5jb20ifSwiaWF0IjoxNjM3Nzk0MDcxLCJleHAiOjE2Mzc4ODA0NzF9.q6oUqLmRpJTXs8f67bmTeaY6CqHH-G_WCfwDvTyt8Xs
 content-type: application/json
 
 {
@@ -83,7 +75,7 @@ content-type: application/json
 
 ###
 POST  https://localhost:3443/api/profiles
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImVtYWlsIjoidXNlcjNAdGVzdC5jb20ifSwiaWF0IjoxNjM3NjY4NjA1LCJleHAiOjE2Mzc3NTUwMDV9.0fFOPL9kCwxUj9SP9ir5n_rjKkH25ss52ht7GWdwnms
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImVtYWlsIjoidXNlcjNAdGVzdC5jb20ifSwiaWF0IjoxNjM3Nzk0MDcxLCJleHAiOjE2Mzc4ODA0NzF9.q6oUqLmRpJTXs8f67bmTeaY6CqHH-G_WCfwDvTyt8Xs
 content-type: application/json
 
 {
@@ -95,9 +87,32 @@ content-type: application/json
 
 ###
 GET   https://localhost:3443/api/sets/allUserSets
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImVtYWlsIjoidXNlcjNAdGVzdC5jb20ifSwiaWF0IjoxNjM3NjY4NjA1LCJleHAiOjE2Mzc3NTUwMDV9.0fFOPL9kCwxUj9SP9ir5n_rjKkH25ss52ht7GWdwnms
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImVtYWlsIjoidXNlcjNAdGVzdC5jb20ifSwiaWF0IjoxNjM3Nzk0MDcxLCJleHAiOjE2Mzc4ODA0NzF9.q6oUqLmRpJTXs8f67bmTeaY6CqHH-G_WCfwDvTyt8Xs
 content-type: application/json
 
 {
     "email": "user3@test.com"
+}
+
+###
+GET   https://localhost:3443/api/sets/set
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImVtYWlsIjoidXNlcjNAdGVzdC5jb20ifSwiaWF0IjoxNjM3Nzk0MDcxLCJleHAiOjE2Mzc4ODA0NzF9.q6oUqLmRpJTXs8f67bmTeaY6CqHH-G_WCfwDvTyt8Xs
+content-type: application/json
+
+{
+    "id": 3,
+    "email": "user3@test.com"
+}
+
+###
+Post   https://localhost:3443/api/sets/set
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImVtYWlsIjoidXNlcjNAdGVzdC5jb20ifSwiaWF0IjoxNjM3Nzk0MDcxLCJleHAiOjE2Mzc4ODA0NzF9.q6oUqLmRpJTXs8f67bmTeaY6CqHH-G_WCfwDvTyt8Xs
+content-type: application/json
+
+{
+    "id": 3,
+    "email": "user3@test.com",
+    "setTitle": "setTitle3",
+    "setDescription": null,
+    "setPortion": null
 }

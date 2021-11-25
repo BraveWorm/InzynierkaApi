@@ -13,7 +13,7 @@ router.post("/registration", async (req, res) => {
 
     try {
         if (!req.body.password || !req.body.email) {
-            return res.send('wrong data')
+            return res.status(400).json({error: "Bad Request!" })
         }
 
         await bcrypt.hash(req.body.password, 8)
@@ -34,7 +34,7 @@ router.post("/registration", async (req, res) => {
                                     knex('profiles').insert({
                                         user_id: rows
                                     })
-                                        .then(res.send('successful registration'))
+                                        .then(res.send( {status :'successful registration'}))
                                 })
 
                         } else {
