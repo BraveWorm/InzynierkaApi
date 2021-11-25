@@ -41,8 +41,8 @@ POST  https://localhost:3443/api/auth/registration
 content-type: application/json
 
 {
-    "email": "user4@test.com",
-    "password": "user4password"    
+    "email": "user5@test.com",
+    "password": "user5password"    
 }
 
 
@@ -79,7 +79,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImVtY
 content-type: application/json
 
 {
-    "email": "user3@test.com",
+    "email": "user1@test.com",
     "name": "name3",
     "avatar": null,
     "description": "description3"
