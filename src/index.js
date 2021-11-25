@@ -4,8 +4,8 @@ import express from 'express'
 //import cookieParser from 'cookie-parser'
 import User from './models/User'
 import knex from './config/database'
-
-
+//var authenticate = require('./Utils/authenticate');
+import authenticate from './utils/authenticate'
 
 dotenv.config()
 
@@ -13,35 +13,28 @@ const https = require('https')
 const path = require('path')
 const fs = require('fs')
 const cors = require('cors')
-
 const bcrypt = require('bcrypt')
 const app = express()
+const auth = require("./routes/auth")
+const profiles = require("./routes/profiles")
+const sets = require("./routes/sets")
 
-app.use(express.json())
+//app.use(express.json())
 app.use(cors())
 app.use(express.json())
 //app.use(cookieParser())
 app.use(express.urlencoded({ extended: true }))
 
-// CORS
-/*app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', 'http://localhost:4200');
-    res.header('Access-Control-Allow-Headers', "Origin, X-Requested-With, Content-Type, Accept, Authorization");
-    res.header('Access-Control-Allow-Credentials', true);
-    if(req.method === 'OPTIONS'){
-        res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-        return res.status(200).json({});
-    }
-    next();
-});*/
 
+app.use("/api/auth", auth);
+app.use("/api/profiles", profiles);
+app.use("/api/sets", sets);
 
 app.get('/api/', (req, res) => res.send('OK!'))
 
-
-
 // User
-app.get('/api/userInfo', authenticate, async (req, res) => {
+app.get('/api/userInfo', authenticate,  async (req, res, next) => {
+    
     if (!(JSON.parse(Buffer.from(req.headers['authorization'].split(".")[1], "base64url")).payload.email === req.body.email)) // Compare email from JWT and email from req
     {
         res.status(401).json({
@@ -56,38 +49,8 @@ app.get('/api/userInfo', authenticate, async (req, res) => {
     }
 })
 
-app.post("/api/auth/registration", (req, res, next) => {
-    if ( !req.body.password || !req.body.email){
-        return res.send('wrong data')
-    } 
-
-    bcrypt.hash(req.body.password, 8)
-        .then(hashedPassword => {
-            knex('users')
-                .select()
-                .where('email', req.body.email)
-                .then(function (rows) {
-                    if (rows.length === 0) {
-                        return knex("users").insert({
-                            //id: "", 
-                            email: req.body.email,
-                            password: hashedPassword
-                        })
-                        .then(res.send( 'successful registration ' ))
-
-                    } else {
-                        res.send(' email already in use ')
-                    }
-                })
-                .catch(function (ex) {
-                    // you can find errors here.
-                    res.send(' err ')
-                })
-        })
-})
 
 //
-
 app.post("/api/isEmailFree", async (req, res) => {
 
 
@@ -105,77 +68,6 @@ app.post("/api/isEmailFree", async (req, res) => {
             res.send(' err ')
         })
 })
-
-
-app.post('/api/auth/login', async (req, res, next) => {
-    try {
-        await knex("users")
-            .where({ email: req.body.email })
-            .first()
-            .then(users => {
-                if (!users) {
-                    res.status(401).json({
-                        error: "No users by that name"
-                    })
-                } else {
-                    return bcrypt
-                        .compare(req.body.password, users.password)
-                        .then(isAuthenticated => {
-                            if (!isAuthenticated) {
-                                res.status(401).json({
-                                    error: "Unauthorized Access!"
-                                })
-                            } else {
-                                const payload = { email: users.email }
-                                const accessToken = jwt.sign({ payload }, process.env.TOKEN_SECRET, { expiresIn: 86400 })
-                                res.send({ accessToken })
-                            }
-                        })
-                }
-            })
-        } catch (err) {
-            return res.sendStatus(403)
-        }
-
-})
-
-app.post('/api/auth/refresh', async (req, res) => {
-    const refreshToken = req.body.token
-
-    if (!refreshToken) {
-        return res.status(401)
-    }
-
-    // TODO: Check if refreshToken exist in DB
-
-    try {
-        await jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET)
-    } catch (err) {
-        return res.sendStatus(403)
-    }
-
-    const accessToken = jwt.sign({ id: 1 }, process.env.TOKEN_SECRET, { expiresIn: 86400 })
-
-    res.send({ accessToken })
-})
-
-app.get('/api/payload', (req, res) => {
-
-})
-
-function authenticate(req, res, next) {
-    const authHeader = req.headers['authorization']
-    const token = authHeader && authHeader.split(' ')[1]
-
-    if (token === null) return res.status(403).send("A token is required for authentication");
-
-    jwt.verify(token, process.env.TOKEN_SECRET, (err, user) => {
-        if (err) return res.status(401).send("Invalid Token")
-
-        req.user = user
-        next()
-    })
-}
 
 
 /*app.listen(3001, () => {
