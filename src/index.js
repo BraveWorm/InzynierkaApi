@@ -70,9 +70,9 @@ app.post("/api/isEmailFree", async (req, res) => {
 })
 
 
-/*app.listen(3001, () => {
-    console.log('Server is up!!')
-})*/
+// app.listen(3001, () => {
+//     console.log('Server is up!!')
+// })
 
 const sslServer = https.createServer({
     key: fs.readFileSync(path.join(__dirname, 'cert', 'key.pem')),

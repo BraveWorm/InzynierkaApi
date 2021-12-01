@@ -39,7 +39,7 @@ router.post("/set", authenticate, async (req, res) => {
             setDescription: req.body.setDescription,
             setPortion: req.body.setPortion
         })
-        .then(res.send('sucesfull profile sets'))
+        .then(res.send({status: 'sucesfull profile sets'}))
 })
 
 
