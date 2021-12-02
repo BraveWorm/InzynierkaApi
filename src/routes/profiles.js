@@ -13,21 +13,7 @@ router.get("/", authenticate, async (req, res) => {
     res.send(profile)
 })
 
-/*
-router.post("/", authenticate, async (req, res) => {
 
-    if (!(JSON // operacje na JSON
-        .parse(Buffer                               
-            .from(req.headers['authorization'] // pobranie z zapytania nagłówka z obiekt authorization
-                .split(".")[1],                // wydzielenie po "."
-                "base64url")                   // schemat kodowania
-        )
-        // pównanie czy email z JWT zgdza się z emailem z body zapytania do api 
-        .payload.email === req.body.email   
-    )) 
-    // zwrócenie statusu 401 Unauthorized z "error": "Unauthorized Access!"
-        return res.status(401).json({ error: "Unauthorized Access!" }) 
-*/
 
 router.post("/", authenticate, async (req, res) => {
     // TODO: walidacja czy id set należy do userera!!!

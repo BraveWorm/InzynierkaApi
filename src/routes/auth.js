@@ -38,12 +38,12 @@ router.post("/registration", async (req, res) => {
                                 })
 
                         } else {
-                            return res.send(' email already in use ')
+                            return res.send({status :' email already in use '})
                         }
                     })
                     .catch(function (ex) {
                         // you can find errors here.
-                        res.send(' err ')
+                        res.send({status :' err '})
                     })
             })
     } catch (err) {
@@ -71,7 +71,7 @@ router.post('/login', async (req, res) => {
                                     error: "Unauthorized Access!"
                                 })
                             } else {
-                                const payload = { email: users.email }
+                                const payload = { id: users.id, email: users.email }
                                 const accessToken = jwt.sign({ payload }, process.env.TOKEN_SECRET, { expiresIn: 86400 })
                                 res.send({ accessToken })
                             }
