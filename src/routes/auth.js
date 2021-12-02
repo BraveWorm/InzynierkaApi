@@ -38,12 +38,12 @@ router.post("/registration", async (req, res) => {
                                 })
 
                         } else {
-                            return res.send(' email already in use ')
+                            return res.send({status :' email already in use '})
                         }
                     })
                     .catch(function (ex) {
                         // you can find errors here.
-                        res.send(' err ')
+                        res.send({status :' err '})
                     })
             })
     } catch (err) {
