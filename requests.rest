@@ -160,7 +160,7 @@ content-type: application/json
 
 ###
 Post   https://localhost:3443/api/sets/setFlashcards
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImlkIjozLCJlbWFpbCI6InVzZXIzQHRlc3QuY29tIn0sImlhdCI6MTYzODQwMTE3MCwiZXhwIjoxNjM4NDg3NTcwfQ.pLcC8r5fFm60acKvcIjYT_rvjbUaewNbJq7arTXAA5E
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImlkIjozLCJlbWFpbCI6InVzZXIzQHRlc3QuY29tIn0sImlhdCI6MTYzODU1MTMwMywiZXhwIjoxNjM4NjM3NzAzfQ.tAXaQtyxT6ouM8k8lOfaWXsDiNltqudb6URxpwouHJU
 content-type: application/json
 
 {
@@ -170,7 +170,6 @@ content-type: application/json
     "setPortion": null,
     "Flashcards":[
         {
-            "id": 110,
             "front": "frontAA12",
             "back": "backAA12"
         },
@@ -179,7 +178,8 @@ content-type: application/json
             "back": "backB"
         },
         {
-            "front": "frontCC3"
+            "front": "frontCC3",
+            "back": "backC"
         }
     ]
 
