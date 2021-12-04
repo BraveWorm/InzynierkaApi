@@ -1,0 +1,33 @@
+import knex from '../config/database'
+import jwt from 'jsonwebtoken'
+import authenticate from '../utils/authenticate'
+const express = require("express")
+let router = express.Router();
+
+// TODO walidacja
+router.get("/flashcardsToLearn", authenticate, async (req, res) => {
+    try {
+        console.log('abc')
+        if (!req.body.set_id) return res.status(400).json({ error: "Bad Request!" });
+
+        const tokenPayload = JSON.parse(Buffer.from(req.headers['authorization'].split(".")[1], "base64url")).payload
+
+        if (!(tokenPayload.email === req.body.email)) // Compare email from JWT and email from req
+            return res.status(401).json({ error: "Unauthorized Access!" })
+
+
+
+        return await knex('flashcards')
+            .select('id', 'front', 'back')
+            .where({ set_id: req.body.set_id })
+            .whereNot({ correctNumber: 4 })
+
+
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: "internal server error" })
+    }
+})
+
+
+module.exports = router;
