@@ -119,6 +119,55 @@ router.post("/setFlashcards", authenticate, async (req, res) => {
 })
 
 
+// TO DELETE!!!
+router.post("/setFlashcardsNoJWT", async (req, res) => {
+    try {
+        if (!req.body.setTitle) return res.status(400).json({ error: "Bad Request!" });
+
+        const UserId = await knex('users')
+        .select('users.id')
+        .where('email', req.body.email)
+
+        if (!req.body.setId)
+            return await knex('sets')
+                .insert({
+                    setTitle: req.body.setTitle,
+                    setDescription: req.body.setDescription,
+                    user_id: UserId[0].id
+                })
+                //.then(res.send({status: 'sucesfull sets insert'}))
+                .then((rows) => {
+                    for (var i = 0; i < req.body.Flashcards.length; i++) {
+                        inserUpdateFlashcards(req, rows, i)
+                    }
+                    return res.send({ status: 'set created' })
+                })
+
+        else {
+            var userIdFromSets = await getUserIdFromSets(req.body.setId)
+            if (userIdFromSets[0].user_id !== UserId[0].id)
+                return res.status(401).json({ error: "Unauthorized Access! Set dont belongs to this user" })
+            return await knex('sets')
+
+                .where({ id: req.body.setId })
+                .update({
+                    setTitle: req.body.setTitle,
+                    setDescription: req.body.setDescription,
+                    user_id: UserId[0].id
+                })
+                .then((rows) => {
+                    for (var i = 0; i < req.body.Flashcards.length; i++) {
+                        inserUpdateFlashcards(req, req.body.setId, i)
+                    }
+                    return res.send({ status: 'set updated' })
+
+                })
+        }
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: "internal server error" })
+    }
+})
 
 function getUserIdFromSets(setId) {
     try {
@@ -167,30 +216,5 @@ async function inserUpdateFlashcards(req, rows, i) {
     }
 }
 
-//----------TO DELETE-----------
-// TODO walidacja
-router.get("/flashcardsToLearn", authenticate, async (req, res) => {
-    try {
-        console.log('abc')
-        if (!req.body.set_id) return res.status(400).json({ error: "Bad Request!" });
-
-        const tokenPayload = JSON.parse(Buffer.from(req.headers['authorization'].split(".")[1], "base64url")).payload
-
-        if (!(tokenPayload.email === req.body.email)) // Compare email from JWT and email from req
-            return res.status(401).json({ error: "Unauthorized Access!" })
-
-
-
-        return await knex('flashcards')
-            .select('id', 'front', 'back')
-            .where({ set_id: req.body.set_id })
-            .whereNot({ correctNumber: 4 })
-
-
-    } catch (error) {
-        console.error(error);
-        return res.status(500).json({ error: "internal server error" })
-    }
-})
 
 module.exports = router;

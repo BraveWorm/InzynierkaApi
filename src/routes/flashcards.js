@@ -30,5 +30,16 @@ router.get("/flashcardsToLearn", authenticate, async (req, res) => {
     }
 })
 
+router.get("/flashcardPlusOrZero", authenticate, async (req, res) => {
+    try {
+
+
+
+
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: "internal server error" })
+    }
+})
 
 module.exports = router;

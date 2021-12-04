@@ -185,6 +185,33 @@ content-type: application/json
 
 }
 
+###
+Post   http://localhost:3001/api/sets/setFlashcardsNoJWT
+content-type: application/json
+
+{
+    "email": "user3@test.com",
+    "setTitle": "setTitle91",
+    "setDescription": null,
+    "setPortion": null,
+    "Flashcards":[
+        {
+            "front": "frontAA12",
+            "back": "backAA12"
+        },
+        {
+            "front": "frontBB2",
+            "back": "backB"
+        },
+        {
+            "front": "frontCC3",
+            "back": "backC"
+        }
+    ]
+
+}
+
+
 
 ###
 GET   http://localhost:3001/api/sets/flashcardsToLearn
@@ -207,3 +234,6 @@ content-type: application/json
     "set_id": 3
 
 }
+
+
+
