@@ -95,13 +95,6 @@ content-type: application/json
 }
 
 
-###
-GET   http://localhost:3001/api/sets/allUserSetsNoJWT
-content-type: application/json
-
-{
-    "email": "user3@test.com"
-}
 
 ###
 GET   http://localhost:3001/api/sets/set
@@ -237,12 +230,18 @@ content-type: application/json
 
 
 ###
-GET   http://localhost:3001/api/flashcards/flashcardsToLearnNoJWT
+POST    http://localhost:3001/api/flashcards/flashcardsToLearnNoJWT
 content-type: application/json
 
 {
-    "email": "user3@test.com",
     "set_id": 3
 
 }
 
+###
+POST   http://localhost:3001/api/sets/allUserSetsNoJWT
+content-type: application/json
+
+{
+    "email": "user3@test.com"
+}
