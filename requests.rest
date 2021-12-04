@@ -66,7 +66,7 @@ content-type: application/json
 
 ### TODO: walidacja 
 GET  http://localhost:3001/api/profiles 
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImlkIjozLCJlbWFpbCI6InVzZXIzQHRlc3QuY29tIn0sImlhdCI6MTYzODYxNzkwMSwiZXhwIjoxNjM4NzA0MzAxfQ.bQM-cV-h2p0DKqQioCF054b1pppTumzanrRk5Mn_3Rw
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImlkIjo0LCJlbWFpbCI6ImFhYUBhYWEifSwiaWF0IjoxNjM4NjI0MDgzLCJleHAiOjE2Mzg3MTA0ODN9.mOQqY8h-PdnAY5BTDjtK69xLNZPgF_Q3A2M8Uh9VD7g
 content-type: application/json
 
 {
