@@ -30,7 +30,7 @@ app.use(express.urlencoded({ extended: true }))
 app.use("/api/auth", auth);
 app.use("/api/profiles", profiles);
 app.use("/api/sets", sets);
-app.use("api/flashcards", flashcards);
+app.use("/api/flashcards", flashcards);
 
 app.get('/api/', (req, res) => res.send('OK!'))
 

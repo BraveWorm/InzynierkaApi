@@ -7,6 +7,7 @@ let router = express.Router();
 
 router.get("/", authenticate, async (req, res) => {
     try {
+        //return console.log( req.headers['authorization'])
         const profile = await knex('profiles')
             .select('profiles.name', 'profiles.avatar', 'profiles.description')
             .where({ user_id: knex('users').select('id').where({ email: req.body.email }) })
