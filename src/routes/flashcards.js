@@ -44,7 +44,7 @@ router.get("/flashcardPlusOrZero", authenticate, async (req, res) => {
 
 // TO DELETE!!!
 // TODO walidacja
-router.get("/flashcardsToLearnNoJWT", async (req, res) => {
+router.post("/flashcardsToLearnNoJWT", async (req, res) => {
     try {
 
         if (!req.body.set_id) return res.status(400).json({ error: "Bad Request!" });

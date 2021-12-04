@@ -22,7 +22,7 @@ router.get("/allUserSets", authenticate, async (req, res) => {
 
 // TO DELETE!!!
 // TODO wyszukiwanie po id z tokenu, a nie po email
-router.get("/allUserSetsNoJWT", async (req, res) => {
+router.post("/allUserSetsNoJWT", async (req, res) => {
     try {
         if (!req.body.email) return res.status(400).json({ error: "Bad Request!" })
 
