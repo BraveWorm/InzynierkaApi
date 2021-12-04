@@ -20,7 +20,7 @@ router.get("/flashcardsToLearn", authenticate, async (req, res) => {
         const flashcardsToLearn = await knex('flashcards')
             .select('flashcards.id', 'flashcards.front', 'flashcards.back')
             .where({ set_id: req.body.set_id })
-            .whereNot('correctNumber', 1)
+            .whereNot('correctNumber', 4)
         res.send(flashcardsToLearn)
 
 
