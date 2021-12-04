@@ -94,6 +94,15 @@ content-type: application/json
     "email": "user3@test.com"
 }
 
+
+###
+GET   http://localhost:3001/api/sets/allUserSetsNoJWT
+content-type: application/json
+
+{
+    "email": "user3@test.com"
+}
+
 ###
 GET   http://localhost:3001/api/sets/set
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImlkIjozLCJlbWFpbCI6InVzZXIzQHRlc3QuY29tIn0sImlhdCI6MTYzODYxNzkwMSwiZXhwIjoxNjM4NzA0MzAxfQ.bQM-cV-h2p0DKqQioCF054b1pppTumzanrRk5Mn_3Rw
@@ -193,7 +202,6 @@ content-type: application/json
     "email": "user3@test.com",
     "setTitle": "setTitle91",
     "setDescription": null,
-    "setPortion": null,
     "Flashcards":[
         {
             "front": "frontAA12",
@@ -213,16 +221,7 @@ content-type: application/json
 
 
 
-###
-GET   http://localhost:3001/api/sets/flashcardsToLearn
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImlkIjozLCJlbWFpbCI6InVzZXIzQHRlc3QuY29tIn0sImlhdCI6MTYzODU1MTMwMywiZXhwIjoxNjM4NjM3NzAzfQ.tAXaQtyxT6ouM8k8lOfaWXsDiNltqudb6URxpwouHJU
-content-type: application/json
 
-{
-    "email": "user3@test.com",
-    "set_id": 3
-
-}
 
 ###
 GET   http://localhost:3001/api/flashcards/flashcardsToLearn
@@ -236,4 +235,14 @@ content-type: application/json
 }
 
 
+
+###
+GET   http://localhost:3001/api/flashcards/flashcardsToLearnNoJWT
+content-type: application/json
+
+{
+    "email": "user3@test.com",
+    "set_id": 3
+
+}
 

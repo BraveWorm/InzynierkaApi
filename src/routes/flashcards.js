@@ -42,4 +42,38 @@ router.get("/flashcardPlusOrZero", authenticate, async (req, res) => {
     }
 })
 
+// TO DELETE!!!
+// TODO walidacja
+router.get("/flashcardsToLearnNoJWT", async (req, res) => {
+    try {
+
+        if (!req.body.set_id) return res.status(400).json({ error: "Bad Request!" });
+
+
+        const flashcardsToLearn = await knex('flashcards')
+            .select('flashcards.id', 'flashcards.front', 'flashcards.back')
+            .where({ set_id: req.body.set_id })
+            .whereNot('correctNumber', 4)
+        res.send(flashcardsToLearn)
+
+
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: "internal server error" })
+    }
+})
+
+router.get("/flashcardPlusOrZero", authenticate, async (req, res) => {
+    try {
+
+
+
+
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: "internal server error" })
+    }
+})
+
+
 module.exports = router;
