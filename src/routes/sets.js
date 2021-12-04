@@ -20,6 +20,23 @@ router.get("/allUserSets", authenticate, async (req, res) => {
     }
 })
 
+// TO DELETE!!!
+// TODO wyszukiwanie po id z tokenu, a nie po email
+router.get("/allUserSetsNoJWT", async (req, res) => {
+    try {
+        if (!req.body.email) return res.status(400).json({ error: "Bad Request!" })
+
+        const sets = await knex('sets')
+            .select('sets.id', 'sets.setTitle', 'sets.setDescription')
+            .where({ user_id: knex('users').select('id').where({ email: req.body.email }) })
+
+        return res.send(sets)
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: "internal server error" })
+    }
+})
+
 router.get("/set", authenticate, async (req, res) => {
     try {
         if (!req.body.id) return res.send('wrong data')
