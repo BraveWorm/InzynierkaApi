@@ -5,7 +5,7 @@ const express = require("express")
 let router = express.Router();
 
 // TODO walidacja
-router.get("/flashcardsToLearn", authenticate, async (req, res) => {
+router.post("/flashcardsToLearn", authenticate, async (req, res) => {
     try {
 
         if (!req.body.set_id) return res.status(400).json({ error: "Bad Request!" });
@@ -75,5 +75,34 @@ router.get("/flashcardPlusOrZero", authenticate, async (req, res) => {
     }
 })
 
+// TO DELETE!!!
+router.post("/flashcardPlusOrZeroNoJWT", async (req, res) => {
+    try {
+        var _correctNumber = await knex('flashcards')
+            .select('flashcards.correctNumber')
+            .where({ id: req.body.flashcardId })
+            _correctNumber = _correctNumber[0].correctNumber
+
+            
+
+            if (req.body.ifCorrect) _correctNumber++
+            else _correctNumber = 0
+
+            if(_correctNumber > 4 || _correctNumber < 0) _correctNumber = 0
+
+            console.log(_correctNumber)
+
+            return knex('flashcards')
+            .update({
+                correctNumber: _correctNumber
+            })
+            .where({ id: req.body.flashcardId })
+            .then(res.send( {status :'successful update'}))
+
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: "internal server error" })
+    }
+})
 
 module.exports = router;
