@@ -7,7 +7,7 @@ exports.up = function (knex) {
         table.integer('correctNumber').unsigned().defaultTo(0)
 
         table.integer('set_id').unsigned().notNull()
-        table.foreign('set_id').references('sets.id')
+        table.foreign('set_id').references('sets.id').onDelete('CASCADE')
     })
 };
 
