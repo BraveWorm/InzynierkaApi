@@ -267,3 +267,46 @@ content-type: application/json
 
 ###
 DELETE   http://localhost:3001/api/sets/setFlashcardsDeleteNoJWT/7
+
+###
+PUT http://localhost:3001/api/profiles/name/1
+content-type: application/json
+
+{
+    "name": "name"
+}
+
+###
+PUT http://localhost:3001/api/profiles/avatar/1
+content-type: application/json
+
+{
+    "avatar": "avatar"
+}
+
+
+###
+PUT http://localhost:3001/api/profiles/description/1
+content-type: application/json
+
+{
+    "description": "description"
+}
+
+###
+POST http://localhost:3001/api/auth/password
+content-type: application/json
+
+{
+    "email": "user3@test.com",
+    "password": "user1password"
+}
+
+###
+POST http://localhost:3001/api/auth/login
+content-type: application/json
+
+{
+    "email": "user3@test.com",
+    "password": "user1password"
+}

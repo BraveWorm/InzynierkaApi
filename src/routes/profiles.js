@@ -45,5 +45,63 @@ router.post("/", authenticate, async (req, res) => {
     }
 })
 
+// TO DELETE!!!
+router.put('/name/:userId', async (req, res) => {
+    try {
+        //console.log(req.params.setId)
+         if (!req.params.userId || !req.body.name) return res.status(400).json({ error: "Bad Request!" });
+
+            return await knex('profiles')                
+                .where({user_id: req.params.userId})
+                .update({name: req.body.name})
+                .then(res.send({ status: 'name updated'}))
+                
+
+        
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: "internal server error" })
+    }
+})
+
+// TO DELETE!!!
+router.put('/avatar/:userId', async (req, res) => {
+    try {
+        //console.log(req.params.setId)
+         if (!req.params.userId || !req.body.avatar) return res.status(400).json({ error: "Bad Request!" });
+
+            return await knex('profiles')                
+                .where({user_id: req.params.userId})
+                .update({avatar: req.body.avatar})
+                .then(res.send({ status: 'avatar updated'}))
+                
+
+        
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: "internal server error" })
+    }
+})
+
+
+// TO DELETE!!!
+router.put('/description/:userId', async (req, res) => {
+    try {
+        //console.log(req.params.setId)
+        if (!req.params.userId || !req.body.description) return res.status(400).json({ error: "Bad Request!" });
+
+            return await knex('profiles')                
+                .where({user_id: req.params.userId})
+                .update({description: req.body.description})
+                .then(res.send({ status: 'description updated'}))
+                
+
+        
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: "internal server error" })
+    }
+})
+
 
 module.exports = router;

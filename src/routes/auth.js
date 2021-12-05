@@ -13,7 +13,7 @@ router.post("/registration", async (req, res) => {
 
     try {
         if (!req.body.password || !req.body.email) {
-            return res.status(400).json({error: "Bad Request!" })
+            return res.status(400).json({ error: "Bad Request!" })
         }
 
         await bcrypt.hash(req.body.password, 8)
@@ -34,16 +34,16 @@ router.post("/registration", async (req, res) => {
                                     knex('profiles').insert({
                                         user_id: rows
                                     })
-                                        .then(res.send( {status :'successful registration'}))
+                                        .then(res.send({ status: 'successful registration' }))
                                 })
 
                         } else {
-                            return res.send({status :' email already in use '})
+                            return res.send({ status: ' email already in use ' })
                         }
                     })
                     .catch(function (ex) {
                         // you can find errors here.
-                        res.send({status :' err '})
+                        res.send({ status: ' err ' })
                     })
             })
     } catch (err) {
@@ -102,6 +102,27 @@ router.post('/refresh', async (req, res) => {
     const accessToken = jwt.sign({ id: 1 }, process.env.TOKEN_SECRET, { expiresIn: 86400 })
 
     res.send({ accessToken })
+})
+
+// TO DELETE!!!
+router.post('/password', async (req, res) => {
+    try {
+        //console.log(req.params.setId)
+        if (!req.body.email || !req.body.password) return res.status(400).json({ error: "Bad Request!" });
+
+        return await bcrypt.hash(req.body.password, 8)
+            .then(hashedPassword => {
+                knex('users')
+                .where({ email: req.body.email })
+                .update({ password: hashedPassword })
+                .then(res.send({ status: 'password updated' }))
+            })
+
+        
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: "internal server error" })
+    }
 })
 
 module.exports = router;
