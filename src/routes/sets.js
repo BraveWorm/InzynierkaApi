@@ -234,4 +234,24 @@ async function inserUpdateFlashcards(req, rows, i) {
 }
 
 
+// TO DELETE!!!
+router.delete('/setFlashcardsDeleteNoJWT/:setId', async (req, res) => {
+    try {
+        //console.log(req.params.setId)
+         if (!req.params.setId) return res.status(400).json({ error: "Bad Request!" });
+
+            return await knex('sets')
+                .del()
+                .where('id', req.params.setId)
+                .then(res.send({ status: 'set deleted'}))
+                
+
+        
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: "internal server error" })
+    }
+})
+
+
 module.exports = router;

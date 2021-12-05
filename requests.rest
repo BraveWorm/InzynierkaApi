@@ -264,3 +264,6 @@ content-type: application/json
     "ifCorrect": false
 }
 
+
+###
+DELETE   http://localhost:3001/api/sets/setFlashcardsDeleteNoJWT/7
