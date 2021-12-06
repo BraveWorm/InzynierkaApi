@@ -86,8 +86,8 @@ content-type: application/json
 }
 
 ###
-GET   http://localhost:3001/api/sets/allUserSets
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImlkIjozLCJlbWFpbCI6InVzZXIzQHRlc3QuY29tIn0sImlhdCI6MTYzODYxNzkwMSwiZXhwIjoxNjM4NzA0MzAxfQ.bQM-cV-h2p0DKqQioCF054b1pppTumzanrRk5Mn_3Rw
+POST   http://localhost:3001/api/sets/allUserSets
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImlkIjozLCJlbWFpbCI6InVzZXIzQHRlc3QuY29tIn0sImlhdCI6MTYzODc5Nzc0NCwiZXhwIjoxNjM4ODg0MTQ0fQ.Xz0wyLGE67cmTBQt2ndfL5FBA6Fj7hwxXF9whRCG3Jo
 content-type: application/json
 
 {
@@ -240,6 +240,7 @@ content-type: application/json
 
 ###
 POST   http://localhost:3001/api/sets/allUserSetsNoJWT
+
 content-type: application/json
 
 {
