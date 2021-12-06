@@ -5,13 +5,15 @@ const express = require("express")
 let router = express.Router();
 
 // TODO wyszukiwanie po id z tokenu, a nie po email
-router.get("/allUserSets", authenticate, async (req, res) => {
+router.post("/allUserSets", authenticate, async (req, res) => {
     try {
         if (!req.body.email) return res.status(400).json({ error: "Bad Request!" })
 
+
+        
         const sets = await knex('sets')
             .select('sets.id', 'sets.setTitle', 'sets.setDescription')
-            .where({ user_id: knex('users').select('id').where({ email: req.body.email }) })
+            .where({ user_id: req.user.payload.id })
 
         return res.send(sets)
     } catch (error) {
@@ -20,22 +22,22 @@ router.get("/allUserSets", authenticate, async (req, res) => {
     }
 })
 
-// TO DELETE!!!
-// TODO wyszukiwanie po id z tokenu, a nie po email
-router.post("/allUserSetsNoJWT", async (req, res) => {
-    try {
-        if (!req.body.email) return res.status(400).json({ error: "Bad Request!" })
+// // TO DELETE!!!
+// // TODO wyszukiwanie po id z tokenu, a nie po email
+// router.post("/allUserSetsNoJWT", authenticate, async (req, res) => {
+//     try {
+//         if (!req.body.email) return res.status(400).json({ error: "Bad Request!" })
 
-        const sets = await knex('sets')
-            .select('sets.id', 'sets.setTitle', 'sets.setDescription')
-            .where({ user_id: knex('users').select('id').where({ email: req.body.email }) })
+//         const sets = await knex('sets')
+//             .select('sets.id', 'sets.setTitle', 'sets.setDescription')
+//             .where({ user_id: knex('users').select('id').where({ email: req.body.email }) })
 
-        return res.send(sets)
-    } catch (error) {
-        console.error(error);
-        return res.status(500).json({ error: "internal server error" })
-    }
-})
+//         return res.send(sets)
+//     } catch (error) {
+//         console.error(error);
+//         return res.status(500).json({ error: "internal server error" })
+//     }
+// })
 
 router.get("/set", authenticate, async (req, res) => {
     try {
@@ -88,9 +90,7 @@ router.post("/setFlashcards", authenticate, async (req, res) => {
     try {
         if (!req.body.setTitle) return res.status(400).json({ error: "Bad Request!" });
 
-        const tokenPayload = JSON.parse(Buffer.from(req.headers['authorization'].split(".")[1], "base64url")).payload
-
-        if (!(tokenPayload.email === req.body.email)) // Compare email from JWT and email from req
+        if (!(req.user.payload.email === req.body.email)) // Compare email from JWT and email from req
             return res.status(401).json({ error: "Unauthorized Access!" })
 
 
@@ -99,7 +99,7 @@ router.post("/setFlashcards", authenticate, async (req, res) => {
                 .insert({
                     setTitle: req.body.setTitle,
                     setDescription: req.body.setDescription,
-                    user_id: tokenPayload.id
+                    user_id: req.user.payload.id
                 })
                 //.then(res.send({status: 'sucesfull sets insert'}))
                 .then((rows) => {
@@ -111,7 +111,7 @@ router.post("/setFlashcards", authenticate, async (req, res) => {
 
         else {
             var userIdFromSets = await getUserIdFromSets(req.body.setId)
-            if (userIdFromSets[0].user_id !== tokenPayload.id)
+            if (userIdFromSets[0].user_id !== req.user.payload.id)
                 return res.status(401).json({ error: "Unauthorized Access! Set dont belongs to this user" })
             return await knex('sets')
 
@@ -119,7 +119,7 @@ router.post("/setFlashcards", authenticate, async (req, res) => {
                 .update({
                     setTitle: req.body.setTitle,
                     setDescription: req.body.setDescription,
-                    user_id: tokenPayload.id
+                    user_id: req.user.payload.id
                 })
                 .then((rows) => {
                     for (var i = 0; i < req.body.Flashcards.length; i++) {
