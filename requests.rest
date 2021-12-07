@@ -184,34 +184,6 @@ content-type: application/json
 
 }
 
-###
-Post   http://localhost:3001/api/sets/setFlashcardsNoJWT
-content-type: application/json
-
-{
-    "email": "user3@test.com",
-    "setTitle": "setTitle91",
-    "setDescription": null,
-    "Flashcards":[
-        {
-            "front": "frontAA12",
-            "back": "backAA12"
-        },
-        {
-            "front": "frontBB2",
-            "back": "backB"
-        },
-        {
-            "front": "frontCC3",
-            "back": "backC"
-        }
-    ]
-
-}
-
-
-
-
 
 ###
 POST   http://localhost:3001/api/flashcards/flashcardsToLearn
@@ -227,40 +199,13 @@ content-type: application/json
 
 
 ###
-POST    http://localhost:3001/api/flashcards/flashcardsToLearnNoJWT
-content-type: application/json
-
-{
-    "set_id": 3
-
-}
-
-###
 POST   http://localhost:3001/api/flashcards/flashcardPlusOrZero
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImlkIjozLCJlbWFpbCI6InVzZXIzQHRlc3QuY29tIn0sImlhdCI6MTYzODg4MzI5NCwiZXhwIjoxNjM4OTY5Njk0fQ.5L7wIDLnn1Hg543ZRiyDuRMXL6UV7m_BokbsVjQGpLQ
 content-type: application/json
 
 {
     "flashcardId": 20,
-    "ifCorrect": false
-}
-
-###
-POST   http://localhost:3001/api/flashcards/flashcardPlusOrZeroNoJWT
-content-type: application/json
-
-{
-    "flashcardId": 4,
     "ifCorrect": true
-}
-
-###
-POST   http://localhost:3001/api/flashcards/flashcardPlusOrZeroNoJWT
-content-type: application/json
-
-{
-    "flashcardId": 4,
-    "ifCorrect": false
 }
 
 

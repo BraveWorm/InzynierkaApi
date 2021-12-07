@@ -1,8 +1,10 @@
 import knex from '../config/database'
 import jwt from 'jsonwebtoken'
 import authenticate from '../utils/authenticate'
+import setStatistics from '../utils/setStatistics'
 const express = require("express")
 let router = express.Router();
+
 
 // TODO: walidacja, tokenPayload
 router.post("/flashcardsToLearn", authenticate, async (req, res) => {
@@ -19,7 +21,7 @@ router.post("/flashcardsToLearn", authenticate, async (req, res) => {
         const flashcardsToLearn = await knex('flashcards')
             .select('flashcards.id', 'flashcards.front', 'flashcards.back')
             .where({ set_id: req.body.set_id })
-            .whereNot('correctNumber', 4)
+            .whereNot('correctNumber', 5)
         return res.send(flashcardsToLearn)
 
 
@@ -30,40 +32,22 @@ router.post("/flashcardsToLearn", authenticate, async (req, res) => {
 })
 
 
-// TODO: DELETE!!!
-// TODO: walidacja
-router.post("/flashcardsToLearnNoJWT", async (req, res) => {
-    try {
 
-        if (!req.body.set_id) return res.status(400).json({ error: "Bad Request!" });
-
-
-        const flashcardsToLearn = await knex('flashcards')
-            .select('flashcards.id', 'flashcards.front', 'flashcards.back')
-            .where({ set_id: req.body.set_id })
-            .whereNot('correctNumber', 5)
-        res.send(flashcardsToLearn)
-
-
-    } catch (error) {
-        console.error(error);
-        return res.status(500).json({ error: "internal server error" })
-    }
-})
-
-
-// TODO: Statystyki na response
 router.post("/flashcardPlusOrZero", authenticate, async (req, res) => {
     try {
 
         if (!req.body.flashcardId) return res.status(400).json({ error: "Bad Request!" });
 
-        const user_id = await knex('sets').select('user_id').where({
+        const setInfo = await knex('sets').select('user_id', "id").where({
             id: knex('flashcards')
                 .select('set_id')
-                .where({id: req.body.flashcardId})
-         })
-        if (req.user.payload.id !== user_id[0].user_id)
+                .where({ id: req.body.flashcardId })
+        })
+
+
+
+
+        if (req.user.payload.id !== setInfo[0].user_id)
             return res.status(401).json({ error: "Unauthorized Access!" })
 
         var _correctNumber = await knex('flashcards')
@@ -80,13 +64,20 @@ router.post("/flashcardPlusOrZero", authenticate, async (req, res) => {
         if (_correctNumber < 0) _correctNumber = 0
 
 
-        return knex('flashcards')
-            .update({
-                correctNumber: _correctNumber
-            })
-            .where({ id: req.body.flashcardId })
-            .then(res.send({ status: 'successful update' }))
+        // return knex('flashcards')
+        //     .update({correctNumber: _correctNumber})
+        //     .where({ id: req.body.flashcardId })
+        //     .then(res.send({ status: 'successful update' }))
 
+        const update = await knex('flashcards')
+            .update({ correctNumber: _correctNumber })
+            .where({ id: req.body.flashcardId })
+
+
+
+        const response = await setStatistics(setInfo[0].id)
+
+        return res.send(response)
 
     } catch (error) {
         console.error(error);

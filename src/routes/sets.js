@@ -190,7 +190,7 @@ router.delete('/setFlashcardsDelete/:setId', authenticate, async (req, res) => {
     }
 })
 
-// TODO: Statystyki
+
 router.get("/setStatistics/:setId", authenticate, async (req, res) => {
     try {
 
@@ -200,7 +200,9 @@ router.get("/setStatistics/:setId", authenticate, async (req, res) => {
         if (req.user.payload.id !== user_id[0].user_id)
             return res.status(401).json({ error: "Unauthorized Access!" })
 
-        return res.send( { status: await setStatistics(req.params.setId)} )
+        const response = await setStatistics(req.params.setId)
+
+        return res.send( response )
         //return res.send(sets)
 
     } catch (error) {
