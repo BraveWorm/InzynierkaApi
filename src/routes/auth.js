@@ -104,7 +104,7 @@ router.post('/refresh', async (req, res) => {
     res.send({ accessToken })
 })
 
-// TO DELETE!!!
+// TODO: DELETE IT!!!
 router.post('/password', async (req, res) => {
     try {
         //console.log(req.params.setId)

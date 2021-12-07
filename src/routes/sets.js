@@ -1,16 +1,12 @@
 import knex from '../config/database'
 import jwt from 'jsonwebtoken'
 import authenticate from '../utils/authenticate'
+import setStatistics from '../utils/setStatistics'
 const express = require("express")
 let router = express.Router();
 
-// TODO wyszukiwanie po id z tokenu, a nie po email
 router.post("/allUserSets", authenticate, async (req, res) => {
     try {
-        if (!req.body.email) return res.status(400).json({ error: "Bad Request!" })
-
-
-        
         const sets = await knex('sets')
             .select('sets.id', 'sets.setTitle', 'sets.setDescription')
             .where({ user_id: req.user.payload.id })
@@ -22,22 +18,7 @@ router.post("/allUserSets", authenticate, async (req, res) => {
     }
 })
 
-// // TO DELETE!!!
-// // TODO wyszukiwanie po id z tokenu, a nie po email
-// router.post("/allUserSetsNoJWT", authenticate, async (req, res) => {
-//     try {
-//         if (!req.body.email) return res.status(400).json({ error: "Bad Request!" })
 
-//         const sets = await knex('sets')
-//             .select('sets.id', 'sets.setTitle', 'sets.setDescription')
-//             .where({ user_id: knex('users').select('id').where({ email: req.body.email }) })
-
-//         return res.send(sets)
-//     } catch (error) {
-//         console.error(error);
-//         return res.status(500).json({ error: "internal server error" })
-//     }
-// })
 
 router.get("/set", authenticate, async (req, res) => {
     try {
@@ -136,55 +117,6 @@ router.post("/setFlashcards", authenticate, async (req, res) => {
 })
 
 
-// TO DELETE!!!
-router.post("/setFlashcardsNoJWT", async (req, res) => {
-    try {
-        if (!req.body.setTitle) return res.status(400).json({ error: "Bad Request!" });
-
-        const UserId = await knex('users')
-        .select('users.id')
-        .where('email', req.body.email)
-
-        if (!req.body.setId)
-            return await knex('sets')
-                .insert({
-                    setTitle: req.body.setTitle,
-                    setDescription: req.body.setDescription,
-                    user_id: UserId[0].id
-                })
-                //.then(res.send({status: 'sucesfull sets insert'}))
-                .then((rows) => {
-                    for (var i = 0; i < req.body.Flashcards.length; i++) {
-                        inserUpdateFlashcards(req, rows, i)
-                    }
-                    return res.send({ status: 'set created' })
-                })
-
-        else {
-            var userIdFromSets = await getUserIdFromSets(req.body.setId)
-            if (userIdFromSets[0].user_id !== UserId[0].id)
-                return res.status(401).json({ error: "Unauthorized Access! Set dont belongs to this user" })
-            return await knex('sets')
-
-                .where({ id: req.body.setId })
-                .update({
-                    setTitle: req.body.setTitle,
-                    setDescription: req.body.setDescription,
-                    user_id: UserId[0].id
-                })
-                .then((rows) => {
-                    for (var i = 0; i < req.body.Flashcards.length; i++) {
-                        inserUpdateFlashcards(req, req.body.setId, i)
-                    }
-                    return res.send({ status: 'set updated' })
-
-                })
-        }
-    } catch (error) {
-        console.error(error);
-        return res.status(500).json({ error: "internal server error" })
-    }
-})
 
 function getUserIdFromSets(setId) {
     try {
@@ -234,24 +166,49 @@ async function inserUpdateFlashcards(req, rows, i) {
 }
 
 
-// TO DELETE!!!
-router.delete('/setFlashcardsDeleteNoJWT/:setId', async (req, res) => {
+router.delete('/setFlashcardsDelete/:setId', authenticate, async (req, res) => {
     try {
         //console.log(req.params.setId)
-         if (!req.params.setId) return res.status(400).json({ error: "Bad Request!" });
 
-            return await knex('sets')
-                .del()
-                .where('id', req.params.setId)
-                .then(res.send({ status: 'set deleted'}))
-                
 
-        
+        if (!req.params.setId) return res.status(400).json({ error: "Bad Request!" });
+
+        const user_id = await knex('sets').where({ id: req.params.setId }).select('user_id')
+        if (req.user.payload.id !== user_id[0].user_id)
+            return res.status(401).json({ error: "Unauthorized Access!" })
+
+        return await knex('sets')
+            .del()
+            .where('id', req.params.setId)
+            .then(res.send({ status: 'set deleted' }))
+
+
+
     } catch (error) {
         console.error(error);
         return res.status(500).json({ error: "internal server error" })
     }
 })
 
+// TODO: Statystyki
+router.get("/setStatistics/:setId", authenticate, async (req, res) => {
+    try {
+
+        if (!req.params.setId) return res.status(400).json({ error: "Bad Request!" });
+
+        const user_id = await knex('sets').where({ id: req.params.setId }).select('user_id')
+        if (req.user.payload.id !== user_id[0].user_id)
+            return res.status(401).json({ error: "Unauthorized Access!" })
+
+        return res.send( { status: await setStatistics(req.params.setId)} )
+        //return res.send(sets)
+
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: "internal server error" })
+    }
+})
+
+// TODO: Resetuj
 
 module.exports = router;

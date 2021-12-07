@@ -45,7 +45,7 @@ router.post("/", authenticate, async (req, res) => {
     }
 })
 
-// TO DELETE!!!
+// TODO: DELETE!!!
 router.put('/name/:userId', async (req, res) => {
     try {
         //console.log(req.params.setId)
@@ -64,7 +64,7 @@ router.put('/name/:userId', async (req, res) => {
     }
 })
 
-// TO DELETE!!!
+// TODO: DELETE!!!
 router.put('/avatar/:userId', async (req, res) => {
     try {
         //console.log(req.params.setId)
@@ -84,7 +84,7 @@ router.put('/avatar/:userId', async (req, res) => {
 })
 
 
-// TO DELETE!!!
+// TODO: DELETE!!!
 router.put('/description/:userId', async (req, res) => {
     try {
         //console.log(req.params.setId)
