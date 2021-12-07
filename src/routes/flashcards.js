@@ -20,7 +20,7 @@ router.post("/flashcardsToLearn", authenticate, async (req, res) => {
             .select('flashcards.id', 'flashcards.front', 'flashcards.back')
             .where({ set_id: req.body.set_id })
             .whereNot('correctNumber', 4)
-        res.send(flashcardsToLearn)
+        return res.send(flashcardsToLearn)
 
 
     } catch (error) {
@@ -29,41 +29,6 @@ router.post("/flashcardsToLearn", authenticate, async (req, res) => {
     }
 })
 
-
-// TODO: 
-router.get("/flashcardPlusOrZero", authenticate, async (req, res) => {
-    try {
-
-
-        // var _correctNumber = await knex('flashcards')
-        //     .select('flashcards.correctNumber')
-        //     .where({ id: req.body.flashcardId })
-        // _correctNumber = _correctNumber[0].correctNumber
-
-
-
-        // if (req.body.ifCorrect) _correctNumber++
-        // else _correctNumber = 0
-
-        // if (_correctNumber > 5) _correctNumber = 5
-        // if (_correctNumber < 0) _correctNumber = 0
-
-        // console.log(_correctNumber)
-
-        // return knex('flashcards')
-        //     .update({
-        //         correctNumber: _correctNumber
-        //     })
-        //     .where({ id: req.body.flashcardId })
-        //     .then(res.send({ status: 'successful update' }))
-
-
-
-    } catch (error) {
-        console.error(error);
-        return res.status(500).json({ error: "internal server error" })
-    }
-})
 
 // TODO: DELETE!!!
 // TODO: walidacja
@@ -87,7 +52,7 @@ router.post("/flashcardsToLearnNoJWT", async (req, res) => {
 })
 
 
-// TODO: 
+// TODO: Statystyki na response
 router.post("/flashcardPlusOrZero", authenticate, async (req, res) => {
     try {
 

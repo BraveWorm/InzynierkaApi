@@ -87,8 +87,7 @@ content-type: application/json
 
 ###
 POST   http://localhost:3001/api/sets/allUserSets
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImlkIjozLCJlbWFpbCI6InVzZXIzQHRlc3QuY29tIn0sImlhdCI6MTYzODc5Nzc0NCwiZXhwIjoxNjM4ODg0MTQ0fQ.Xz0wyLGE67cmTBQt2ndfL5FBA6Fj7hwxXF9whRCG3Jo
-content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImlkIjozLCJlbWFpbCI6InVzZXIzQHRlc3QuY29tIn0sImlhdCI6MTYzODkxMjQyNywiZXhwIjoxNjM4OTk4ODI3fQ.YsxNC1G8TK9S2YQ_aa4d3Nc32e3j9d5p7Upp2cUJkV8
 
 
 
@@ -216,12 +215,12 @@ content-type: application/json
 
 ###
 POST   http://localhost:3001/api/flashcards/flashcardsToLearn
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImlkIjozLCJlbWFpbCI6InVzZXIzQHRlc3QuY29tIn0sImlhdCI6MTYzODU1MTMwMywiZXhwIjoxNjM4NjM3NzAzfQ.tAXaQtyxT6ouM8k8lOfaWXsDiNltqudb6URxpwouHJU
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImlkIjozLCJlbWFpbCI6InVzZXIzQHRlc3QuY29tIn0sImlhdCI6MTYzODkxMjk0MSwiZXhwIjoxNjM4OTk5MzQxfQ.U3DxyMI6bAsxLxKyktKJNbmlfcjVmLhv7wQq5-04-HY
 content-type: application/json
 
 {
     "email": "user3@test.com",
-    "set_id": 3
+    "set_id": 8
 
 }
 
