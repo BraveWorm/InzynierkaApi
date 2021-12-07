@@ -14,14 +14,18 @@ router.post("/flashcardsToLearn", authenticate, async (req, res) => {
 
         const tokenPayload = JSON.parse(Buffer.from(req.headers['authorization'].split(".")[1], "base64url")).payload
 
-        if (!(tokenPayload.email === req.body.email)) // Compare email from JWT and email from req
+        const userIdFromSets = await knex('sets')
+            .select('sets.user_id')
+            .where({ id: req.body.set_id })
+
+        if (req.user.payload.id !== userIdFromSets[0].user_id) // Compare email from JWT and email from req
             return res.status(401).json({ error: "Unauthorized Access!" })
 
 
         const flashcardsToLearn = await knex('flashcards')
             .select('flashcards.id', 'flashcards.front', 'flashcards.back')
             .where({ set_id: req.body.set_id })
-            .whereNot('correctNumber', 5)
+            .whereNot({ correctNumber: 5 })
         return res.send(flashcardsToLearn)
 
 
