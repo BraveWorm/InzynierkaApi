@@ -90,9 +90,7 @@ POST   http://localhost:3001/api/sets/allUserSets
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImlkIjozLCJlbWFpbCI6InVzZXIzQHRlc3QuY29tIn0sImlhdCI6MTYzODc5Nzc0NCwiZXhwIjoxNjM4ODg0MTQ0fQ.Xz0wyLGE67cmTBQt2ndfL5FBA6Fj7hwxXF9whRCG3Jo
 content-type: application/json
 
-{
-    "email": "user3@test.com"
-}
+
 
 
 
@@ -239,12 +237,13 @@ content-type: application/json
 }
 
 ###
-POST   http://localhost:3001/api/sets/allUserSetsNoJWT
-
+POST   http://localhost:3001/api/flashcards/flashcardPlusOrZero
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImlkIjozLCJlbWFpbCI6InVzZXIzQHRlc3QuY29tIn0sImlhdCI6MTYzODg4MzI5NCwiZXhwIjoxNjM4OTY5Njk0fQ.5L7wIDLnn1Hg543ZRiyDuRMXL6UV7m_BokbsVjQGpLQ
 content-type: application/json
 
 {
-    "email": "user3@test.com"
+    "flashcardId": 20,
+    "ifCorrect": false
 }
 
 ###
@@ -267,7 +266,8 @@ content-type: application/json
 
 
 ###
-DELETE   http://localhost:3001/api/sets/setFlashcardsDeleteNoJWT/7
+DELETE   http://localhost:3001/api/sets/setFlashcardsDelete/7
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImlkIjozLCJlbWFpbCI6InVzZXIzQHRlc3QuY29tIn0sImlhdCI6MTYzODg4MzI5NCwiZXhwIjoxNjM4OTY5Njk0fQ.5L7wIDLnn1Hg543ZRiyDuRMXL6UV7m_BokbsVjQGpLQ
 
 ###
 PUT http://localhost:3001/api/profiles/name/1
@@ -311,3 +311,7 @@ content-type: application/json
     "email": "user3@test.com",
     "password": "user1password"
 }
+
+###
+GET   http://localhost:3001/api/sets/setStatistics/8
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImlkIjozLCJlbWFpbCI6InVzZXIzQHRlc3QuY29tIn0sImlhdCI6MTYzODg4MzI5NCwiZXhwIjoxNjM4OTY5Njk0fQ.5L7wIDLnn1Hg543ZRiyDuRMXL6UV7m_BokbsVjQGpLQ
