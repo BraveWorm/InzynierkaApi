@@ -21,38 +21,30 @@ router.get("/", authenticate, async (req, res) => {
 
 
 
-router.post("/", authenticate, async (req, res) => {
+router.put("/", authenticate, async (req, res) => {
     try {
-        // TODO: walidacja czy id set należy do userera!!!
-        const tokenPayload = JSON.parse(Buffer.from(req.headers['authorization'].split(".")[1], "base64url")).payload
-
-        if (!(tokenPayload.email === req.body.email) || !(tokenPayload === 1)) // Compare email from JWT and email from req
-            return res.status(401).json({ error: "Unauthorized Access!" })
         return await knex('profiles')
-            .where({
-                user_id: knex('users').select('id')
-                    .where({ email: req.body.email })
-            })
+            .where({ user_id: req.user.payload.id })
             .update({
                 name: req.body.name,
                 avatar: req.body.avatar,
                 description: req.body.description
             })
-            .then(res.send('sucesfull profile insert'))
+            .then(res.send({ status: 'sucesfull profile insert' }))
     } catch (error) {
         console.error(error);
         return res.status(500).json({ error: "internal server error" })
     }
 })
 
-// TODO: DELETE!!!
-router.put('/name/:userId', async (req, res) => {
+
+router.put('/name', authenticate, async (req, res) => {
     try {
         //console.log(req.params.setId)
-        if (!req.params.userId || !req.body.name) return res.status(400).json({ error: "Bad Request!" });
+        if (!req.body.name) return res.status(400).json({ error: "Bad Request!" });
 
         return await knex('profiles')
-            .where({ user_id: req.params.userId })
+            .where({ user_id: req.user.payload.id })
             .update({ name: req.body.name })
             .then(res.send({ status: 'name updated' }))
 
@@ -64,14 +56,13 @@ router.put('/name/:userId', async (req, res) => {
     }
 })
 
-// TODO: DELETE!!!
-router.put('/avatar/:userId', async (req, res) => {
+router.put('/avatar', authenticate, async (req, res) => {
     try {
         //console.log(req.params.setId)
-        if (!req.params.userId || !req.body.avatar) return res.status(400).json({ error: "Bad Request!" });
+        if (!req.body.avatar) return res.status(400).json({ error: "Bad Request!" });
 
         return await knex('profiles')
-            .where({ user_id: req.params.userId })
+            .where({ user_id: req.user.payload.id })
             .update({ avatar: req.body.avatar })
             .then(res.send({ status: 'avatar updated' }))
 
@@ -84,14 +75,13 @@ router.put('/avatar/:userId', async (req, res) => {
 })
 
 
-// TODO: DELETE!!!
-router.put('/description/:userId', async (req, res) => {
+router.put('/description', authenticate, async (req, res) => {
     try {
         //console.log(req.params.setId)
-        if (!req.params.userId || !req.body.description) return res.status(400).json({ error: "Bad Request!" });
+        if (!req.body.description) return res.status(400).json({ error: "Bad Request!" });
 
         return await knex('profiles')
-            .where({ user_id: req.params.userId })
+            .where({ user_id: req.user.payload.id })
             .update({ description: req.body.description })
             .then(res.send({ status: 'description updated' }))
 

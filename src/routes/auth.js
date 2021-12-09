@@ -1,5 +1,6 @@
 import knex from '../config/database'
 import jwt from 'jsonwebtoken'
+import authenticate from '../utils/authenticate'
 const express = require("express")
 const bcrypt = require('bcrypt')
 let router = express.Router();
@@ -84,41 +85,62 @@ router.post('/login', async (req, res) => {
 
 })
 
-router.post('/refresh', async (req, res) => {
-    const refreshToken = req.body.token
+// router.post('/refresh', async (req, res) => {
+//     const refreshToken = req.body.token
 
-    if (!refreshToken) {
-        return res.status(401)
-    }
+//     if (!refreshToken) {
+//         return res.status(401)
+//     }
 
-    // TODO: Check if refreshToken exist in DB
+//     // TODO: Check if refreshToken exist in DB
 
+//     try {
+//         await jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET)
+//     } catch (err) {
+//         return res.sendStatus(403)
+//     }
+
+//     const accessToken = jwt.sign({ id: 1 }, process.env.TOKEN_SECRET, { expiresIn: 86400 })
+
+//     res.send({ accessToken })
+// })
+
+
+router.post('/password', authenticate, async (req, res) => {
     try {
-        await jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET)
-    } catch (err) {
-        return res.sendStatus(403)
-    }
+        if (!req.body.oldPassword || !req.body.newPassword) return res.status(400).json({ error: "Bad Request!" });
 
-    const accessToken = jwt.sign({ id: 1 }, process.env.TOKEN_SECRET, { expiresIn: 86400 })
-
-    res.send({ accessToken })
-})
-
-// TODO: DELETE IT!!!
-router.post('/password', async (req, res) => {
-    try {
-        //console.log(req.params.setId)
-        if (!req.body.email || !req.body.password) return res.status(400).json({ error: "Bad Request!" });
-
-        return await bcrypt.hash(req.body.password, 8)
-            .then(hashedPassword => {
-                knex('users')
-                .where({ email: req.body.email })
-                .update({ password: hashedPassword })
-                .then(res.send({ status: 'password updated' }))
+        await knex("users")
+            .where({ id: req.user.payload.id })
+            .first()
+            .then(users => {
+                if (!users) {
+                    return res.status(401).json({
+                        error: "No users by that name"
+                    })
+                } else {
+                    return bcrypt
+                        .compare(req.body.oldPassword, users.password)
+                        .then(isAuthenticated => {
+                            if (!isAuthenticated) {
+                                res.status(401).json({
+                                    error: "Unauthorized Access!"
+                                })
+                            } else {
+                                bcrypt.hash(req.body.newPassword, 8)
+                                    .then(hashedPassword => {
+                                        knex('users')
+                                            .where({ id: req.user.payload.id })
+                                            .update({ password: hashedPassword })
+                                            .then(res.send({ status: 'password updated' }))
+                                    })
+                            }
+                        })
+                }
             })
 
-        
+
+
     } catch (error) {
         console.error(error);
         return res.status(500).json({ error: "internal server error" })
