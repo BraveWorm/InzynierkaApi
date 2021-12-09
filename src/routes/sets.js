@@ -202,7 +202,7 @@ router.get("/setStatistics/:setId", authenticate, async (req, res) => {
 
         const response = await setStatistics(req.params.setId)
 
-        return res.send( response )
+        return res.send(response)
         //return res.send(sets)
 
     } catch (error) {
@@ -211,6 +211,30 @@ router.get("/setStatistics/:setId", authenticate, async (req, res) => {
     }
 })
 
-// TODO: Resetuj
+router.put("/setReset/:setId", authenticate, async (req, res) => {
+    try {
+
+        if (!req.params.setId) return res.status(400).json({ error: "Bad Request!" });
+
+        const userIdFromSet = await knex('sets').select('user_id').where({ id: req.params.setId })
+
+        if (req.user.payload.id !== userIdFromSet[0].user_id)
+            return res.status(401).json({ error: "Unauthorized Access!" })
+
+
+        return knex('flashcards')
+            .update({ correctNumber: 0 })
+            .where({ set_id: req.params.setId })
+            .then(res.send({ status: 'successful update' }))
+
+
+
+
+
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: "internal server error" })
+    }
+})
 
 module.exports = router;

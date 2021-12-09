@@ -6,19 +6,16 @@ const express = require("express")
 let router = express.Router();
 
 
-// TODO: walidacja, tokenPayload
 router.post("/flashcardsToLearn", authenticate, async (req, res) => {
     try {
 
         if (!req.body.set_id) return res.status(400).json({ error: "Bad Request!" });
 
-        const tokenPayload = JSON.parse(Buffer.from(req.headers['authorization'].split(".")[1], "base64url")).payload
-
         const userIdFromSets = await knex('sets')
             .select('sets.user_id')
             .where({ id: req.body.set_id })
 
-        if (req.user.payload.id !== userIdFromSets[0].user_id) // Compare email from JWT and email from req
+        if (req.user.payload.id !== userIdFromSets[0].user_id) // Compare userID from JWT and userID from req
             return res.status(401).json({ error: "Unauthorized Access!" })
 
 
@@ -26,6 +23,7 @@ router.post("/flashcardsToLearn", authenticate, async (req, res) => {
             .select('flashcards.id', 'flashcards.front', 'flashcards.back')
             .where({ set_id: req.body.set_id })
             .whereNot({ correctNumber: 5 })
+        if (!flashcardsToLearn) console.log('aaa')
         return res.send(flashcardsToLearn)
 
 

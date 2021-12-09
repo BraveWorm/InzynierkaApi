@@ -64,7 +64,6 @@ content-type: application/json
 }
 
 
-### TODO: walidacja 
 GET  http://localhost:3001/api/profiles 
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImlkIjo0LCJlbWFpbCI6ImFhYUBhYWEifSwiaWF0IjoxNjM4NjI0MDgzLCJleHAiOjE2Mzg3MTA0ODN9.mOQqY8h-PdnAY5BTDjtK69xLNZPgF_Q3A2M8Uh9VD7g
 content-type: application/json
@@ -74,12 +73,11 @@ content-type: application/json
 }
 
 ###
-POST  http://localhost:3001/api/profiles
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImVtYWlsIjoidXNlcjNAdGVzdC5jb20ifSwiaWF0IjoxNjM3Nzk0MDcxLCJleHAiOjE2Mzc4ODA0NzF9.q6oUqLmRpJTXs8f67bmTeaY6CqHH-G_WCfwDvTyt8Xs
+PUT  http://localhost:3001/api/profiles
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImlkIjozLCJlbWFpbCI6InVzZXIzQHRlc3QuY29tIn0sImlhdCI6MTYzODkxOTg4NiwiZXhwIjoxNjM5MDA2Mjg2fQ.rRPnh-chArIlOEJFYWdN5f7tgAZn8cfeQxklkxQWODQ
 content-type: application/json
 
 {
-    "email": "user1@test.com",
     "name": "name3",
     "avatar": null,
     "description": "description3"
@@ -187,7 +185,7 @@ content-type: application/json
 
 ###
 POST   http://localhost:3001/api/flashcards/flashcardsToLearn
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImlkIjozLCJlbWFpbCI6InVzZXIzQHRlc3QuY29tIn0sImlhdCI6MTYzODkxMjk0MSwiZXhwIjoxNjM4OTk5MzQxfQ.U3DxyMI6bAsxLxKyktKJNbmlfcjVmLhv7wQq5-04-HY
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImlkIjozLCJlbWFpbCI6InVzZXIzQHRlc3QuY29tIn0sImlhdCI6MTYzODkxOTg4NiwiZXhwIjoxNjM5MDA2Mjg2fQ.rRPnh-chArIlOEJFYWdN5f7tgAZn8cfeQxklkxQWODQ
 content-type: application/json
 
 {
@@ -214,37 +212,41 @@ DELETE   http://localhost:3001/api/sets/setFlashcardsDelete/7
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImlkIjozLCJlbWFpbCI6InVzZXIzQHRlc3QuY29tIn0sImlhdCI6MTYzODg4MzI5NCwiZXhwIjoxNjM4OTY5Njk0fQ.5L7wIDLnn1Hg543ZRiyDuRMXL6UV7m_BokbsVjQGpLQ
 
 ###
-PUT http://localhost:3001/api/profiles/name/1
+PUT http://localhost:3001/api/profiles/name
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImlkIjozLCJlbWFpbCI6InVzZXIzQHRlc3QuY29tIn0sImlhdCI6MTYzODkxOTg4NiwiZXhwIjoxNjM5MDA2Mjg2fQ.rRPnh-chArIlOEJFYWdN5f7tgAZn8cfeQxklkxQWODQ
 content-type: application/json
 
 {
-    "name": "name"
+    "name": "name1"
 }
 
 ###
-PUT http://localhost:3001/api/profiles/avatar/1
+PUT http://localhost:3001/api/profiles/avatar
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImlkIjozLCJlbWFpbCI6InVzZXIzQHRlc3QuY29tIn0sImlhdCI6MTYzODkxOTg4NiwiZXhwIjoxNjM5MDA2Mjg2fQ.rRPnh-chArIlOEJFYWdN5f7tgAZn8cfeQxklkxQWODQ
 content-type: application/json
 
 {
-    "avatar": "avatar"
+    "avatar": "avatar1"
 }
 
 
 ###
-PUT http://localhost:3001/api/profiles/description/1
+PUT http://localhost:3001/api/profiles/description
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImlkIjozLCJlbWFpbCI6InVzZXIzQHRlc3QuY29tIn0sImlhdCI6MTYzODkxOTg4NiwiZXhwIjoxNjM5MDA2Mjg2fQ.rRPnh-chArIlOEJFYWdN5f7tgAZn8cfeQxklkxQWODQ
 content-type: application/json
 
 {
-    "description": "description"
+    "description": "description1"
 }
 
 ###
 POST http://localhost:3001/api/auth/password
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImlkIjozLCJlbWFpbCI6InVzZXIzQHRlc3QuY29tIn0sImlhdCI6MTYzODkyMjExMiwiZXhwIjoxNjM5MDA4NTEyfQ.6z5LBimkNjft-ZqEJ7pWXJcMjuU8Qe45zda0Ju7GlN0
 content-type: application/json
 
 {
-    "email": "user3@test.com",
-    "password": "user1password"
+    "oldPassword": "user3passwordNew",
+    "newPassword": "user3password"
 }
 
 ###
@@ -253,9 +255,13 @@ content-type: application/json
 
 {
     "email": "user3@test.com",
-    "password": "user1password"
+    "password": "user3password"
 }
 
 ###
 GET   http://localhost:3001/api/sets/setStatistics/8
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImlkIjozLCJlbWFpbCI6InVzZXIzQHRlc3QuY29tIn0sImlhdCI6MTYzODg4MzI5NCwiZXhwIjoxNjM4OTY5Njk0fQ.5L7wIDLnn1Hg543ZRiyDuRMXL6UV7m_BokbsVjQGpLQ
+
+###
+PUT   http://localhost:3001/api/sets/setReset/8
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImlkIjozLCJlbWFpbCI6InVzZXIzQHRlc3QuY29tIn0sImlhdCI6MTYzODg4MzI5NCwiZXhwIjoxNjM4OTY5Njk0fQ.5L7wIDLnn1Hg543ZRiyDuRMXL6UV7m_BokbsVjQGpLQ
