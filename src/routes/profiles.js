@@ -1,16 +1,16 @@
 import knex from '../config/database'
 import jwt from 'jsonwebtoken'
 import authenticate from '../utils/authenticate'
+import setStatistics from '../utils/setStatistics'
 const express = require("express")
 let router = express.Router();
 
 
 router.get("/", authenticate, async (req, res) => {
     try {
-        //return console.log( req.headers['authorization'])
         const profile = await knex('profiles')
             .select('profiles.name', 'profiles.avatar', 'profiles.description')
-            .where({ user_id: knex('users').select('id').where({ email: req.body.email }) })
+            .where({ user_id: knex('users').select('id').where({ id: req.user.payload.id }) })
 
         res.send(profile)
     } catch (error) {
@@ -37,8 +37,32 @@ router.put("/", authenticate, async (req, res) => {
     }
 })
 
+router.get('/statistics', authenticate, async (req, res) => {
+    try {
+        var setsId = await knex('sets')
+            .select('sets.id')
+            .where({ user_id: req.user.payload.id })
 
-router.put('/name', authenticate, async (req, res) => {
+        if (setsId == 0)
+            return res.send({ status: 'User don\'t have any sets' })
+
+        var statistics = await setStatistics(setsId[0].id)
+
+        for (var i = 1; i < setsId.length; i++) {
+            statistics.learned += (await setStatistics(setsId[i].id)).learned
+            statistics.unlearned += (await setStatistics(setsId[i].id)).unlearned
+            statistics.allFlashcards += (await setStatistics(setsId[i].id)).allFlashcards
+        }
+
+
+        return res.send(statistics)
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: "internal server error" })
+    }
+})
+
+router.post('/name', authenticate, async (req, res) => {
     try {
         //console.log(req.params.setId)
         if (!req.body.name) return res.status(400).json({ error: "Bad Request!" });
@@ -56,7 +80,7 @@ router.put('/name', authenticate, async (req, res) => {
     }
 })
 
-router.put('/avatar', authenticate, async (req, res) => {
+router.post('/avatar', authenticate, async (req, res) => {
     try {
         //console.log(req.params.setId)
         if (!req.body.avatar) return res.status(400).json({ error: "Bad Request!" });
@@ -75,7 +99,7 @@ router.put('/avatar', authenticate, async (req, res) => {
 })
 
 
-router.put('/description', authenticate, async (req, res) => {
+router.post('/description', authenticate, async (req, res) => {
     try {
         //console.log(req.params.setId)
         if (!req.body.description) return res.status(400).json({ error: "Bad Request!" });
