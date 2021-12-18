@@ -6,6 +6,7 @@ const express = require("express")
 let router = express.Router();
 const { param, validationResult } = require('express-validator');
 
+// TODO: Delete avatar data base and code
 
 router.get("/", authenticate, async (req, res) => {
     try {
@@ -140,6 +141,47 @@ router.get('/statisticsSingle/:correctNumber',
                 numberOfFlashcards += (await knex('flashcards')
                     .select('*')
                     .where({ set_id: setsId[i].id, correctNumber: req.params.correctNumber })).length
+            }
+
+            return res.send({ numberOfFlashcards: numberOfFlashcards })
+        } catch (error) {
+            console.error(error);
+            return res.status(500).json({ error: "internal server error" })
+        }
+    })
+
+
+router.get('/statisticsBetween/:correctNumberFrom/:correctNumberTo',
+    authenticate,
+    param('correctNumberFrom').exists().isNumeric(),
+    param('correctNumberTo').exists().isNumeric(),
+    async (req, res) => {
+        try {
+
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(400).json({ errors: errors.array() });
+            }
+            if (req.params.correctNumberFrom > req.params.correctNumberTo || req.params.correctNumberFrom < 0 || req.params.correctNumberTo > 5) {
+                return res.status(400).json({ error: "Bad Request!" });
+            }
+
+            var setsId = await knex('sets')
+                .select('sets.id')
+                .where({ user_id: req.user.payload.id })
+
+            if (setsId == 0)
+                return res.send({ status: 'User don\'t have any sets' })
+
+            var numberOfFlashcards = 0
+            for (var i = 0; i < setsId.length; i++) {
+
+                numberOfFlashcards += (await knex('flashcards')
+                    .select('*')
+                    .where({ set_id: setsId[i].id })
+                    .andWhere('correctNumber', '>=' , req.params.correctNumberFrom)
+                    .andWhere('correctNumber', '<=' , req.params.correctNumberTo)
+                    ).length
             }
 
             return res.send({ numberOfFlashcards: numberOfFlashcards })
