@@ -15,11 +15,13 @@ router.post("/registration",
     body('email').normalizeEmail().isEmail(),
     body('password').isLength({ min: 5, max: 15 }),
     async (req, res) => {
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            return res.status(400).json({ errors: errors.array() });
-        }
         try {
+
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(400).json({ errors: errors.array() });
+            }
+
             if (!req.body.password || !req.body.email) {
                 return res.status(400).json({ error: "Bad Request!" })
             }

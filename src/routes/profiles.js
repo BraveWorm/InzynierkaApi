@@ -4,6 +4,7 @@ import authenticate from '../utils/authenticate'
 import setStatistics from '../utils/setStatistics'
 const express = require("express")
 let router = express.Router();
+const { param, validationResult } = require('express-validator');
 
 
 router.get("/", authenticate, async (req, res) => {
@@ -115,29 +116,37 @@ router.post('/description', authenticate, async (req, res) => {
     }
 })
 
-router.get('/statisticsSingle/:correctNumber', authenticate, async (req, res) => {
-    try {
+router.get('/statisticsSingle/:correctNumber',
+    authenticate,
+    param('correctNumber').exists().isNumeric(),
+    async (req, res) => {
+        try {
 
-        var setsId = await knex('sets')
-            .select('sets.id')
-            .where({ user_id: req.user.payload.id })
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(400).json({ errors: errors.array() });
+            }
 
-        if (setsId == 0)
-            return res.send({ status: 'User don\'t have any sets' })
+            var setsId = await knex('sets')
+                .select('sets.id')
+                .where({ user_id: req.user.payload.id })
 
-        var numberOfFlashcards = 0
-        for (var i = 0; i < setsId.length; i++) {
+            if (setsId == 0)
+                return res.send({ status: 'User don\'t have any sets' })
 
-            numberOfFlashcards += (await knex('flashcards')
-            .select('*')
-            .where({ set_id: setsId[i].id, correctNumber: req.params.correctNumber })).length
+            var numberOfFlashcards = 0
+            for (var i = 0; i < setsId.length; i++) {
+
+                numberOfFlashcards += (await knex('flashcards')
+                    .select('*')
+                    .where({ set_id: setsId[i].id, correctNumber: req.params.correctNumber })).length
+            }
+
+            return res.send({ numberOfFlashcards: numberOfFlashcards })
+        } catch (error) {
+            console.error(error);
+            return res.status(500).json({ error: "internal server error" })
         }
-
-        return res.send({ numberOfFlashcards: numberOfFlashcards })
-    } catch (error) {
-        console.error(error);
-        return res.status(500).json({ error: "internal server error" })
-    }
-})
+    })
 
 module.exports = router;
