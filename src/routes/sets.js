@@ -38,28 +38,28 @@ router.post("/set", authenticate, async (req, res) => {
     try {
         if (!req.body.setTitle) return res.status(400).json({ error: "Bad Request!" });
 
-        const tokenPayload = JSON.parse(Buffer.from(req.headers['authorization'].split(".")[1], "base64url")).payload
-
-        if (!(tokenPayload.email === req.body.email)) // Compare email from JWT and email from req
-            return res.status(401).json({ error: "Unauthorized Access!" })
-
-
         if (!req.body.id)
             return await knex('sets')
                 .insert({
                     setTitle: req.body.setTitle,
                     setDescription: req.body.setDescription,
-                    user_id: tokenPayload.id
+                    user_id: req.user.payload.id
                 })
-                .then(res.send({ status: 'sucesfull sets insert' }))
-        else return await knex('sets')
-            .where({ id: req.body.id })
-            .update({
-                setTitle: req.body.setTitle,
-                setDescription: req.body.setDescription,
-                user_id: tokenPayload.id
-            })
-            .then(res.send({ status: 'sucesfull sets update' }))
+                .then(res.send({ status: 'sucesfull set insert' }))
+        else {
+            var debug = await knex('sets').where({ id: req.body.id }).select('sets.user_id')    
+            if ((await knex('sets').where({ id: req.body.id }).select('sets.user_id'))[0].user_id !== req.user.payload.id)
+                return res.status(401).json({ error: "Unauthorized Access!" })
+            return await knex('sets')
+                .where({ id: req.body.id })
+                .update({
+                    setTitle: req.body.setTitle,
+                    setDescription: req.body.setDescription,
+                    user_id: req.user.payload.id
+                })
+                .then(res.send({ status: 'sucesfull set update' }))
+        }
+
     } catch (error) {
         console.error(error);
         return res.status(500).json({ error: "internal server error" })
@@ -202,7 +202,7 @@ router.get("/setStatistics/:setId", authenticate, async (req, res) => {
 
         const response = await setStatistics(req.params.setId)
 
-        return res.send(response)
+        return res.send(Array.of(response))
         //return res.send(sets)
 
     } catch (error) {

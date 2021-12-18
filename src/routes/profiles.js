@@ -46,16 +46,14 @@ router.get('/statistics', authenticate, async (req, res) => {
         if (setsId == 0)
             return res.send({ status: 'User don\'t have any sets' })
 
-        var statistics = await setStatistics(setsId[0].id)
+        var statistics = { howManySets: setsId.length, learned: 0, unlearned: 0, allFlashcards: 0 }
 
-        for (var i = 1; i < setsId.length; i++) {
+        for (var i = 0; i < setsId.length; i++) {
             statistics.learned += (await setStatistics(setsId[i].id)).learned
             statistics.unlearned += (await setStatistics(setsId[i].id)).unlearned
             statistics.allFlashcards += (await setStatistics(setsId[i].id)).allFlashcards
         }
-
-
-        return res.send(statistics)
+        return res.send(Array.of(statistics))
     } catch (error) {
         console.error(error);
         return res.status(500).json({ error: "internal server error" })
@@ -117,5 +115,29 @@ router.post('/description', authenticate, async (req, res) => {
     }
 })
 
+router.get('/statisticsSingle/:correctNumber', authenticate, async (req, res) => {
+    try {
+
+        var setsId = await knex('sets')
+            .select('sets.id')
+            .where({ user_id: req.user.payload.id })
+
+        if (setsId == 0)
+            return res.send({ status: 'User don\'t have any sets' })
+
+        var numberOfFlashcards = 0
+        for (var i = 0; i < setsId.length; i++) {
+
+            numberOfFlashcards += (await knex('flashcards')
+            .select('*')
+            .where({ set_id: setsId[i].id, correctNumber: req.params.correctNumber })).length
+        }
+
+        return res.send({ numberOfFlashcards: numberOfFlashcards })
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: "internal server error" })
+    }
+})
 
 module.exports = router;
