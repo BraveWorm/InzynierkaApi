@@ -202,7 +202,7 @@ router.get("/setStatistics/:setId", authenticate, async (req, res) => {
 
         const response = await setStatistics(req.params.setId)
 
-        return res.send(response)
+        return res.send(Array.of(response))
         //return res.send(sets)
 
     } catch (error) {

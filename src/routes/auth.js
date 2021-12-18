@@ -4,53 +4,60 @@ import authenticate from '../utils/authenticate'
 const express = require("express")
 const bcrypt = require('bcrypt')
 let router = express.Router();
+const { body, validationResult } = require('express-validator');
 
 /*router.use(function(req, res, next){
     console.log(req.url, "@", Date.now())
     next();
 })*/
 
-router.post("/registration", async (req, res) => {
-
-    try {
-        if (!req.body.password || !req.body.email) {
-            return res.status(400).json({ error: "Bad Request!" })
+router.post("/registration",
+    body('email').normalizeEmail().isEmail(),
+    body('password').isLength({ min: 5, max: 15 }),
+    async (req, res) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
         }
+        try {
+            if (!req.body.password || !req.body.email) {
+                return res.status(400).json({ error: "Bad Request!" })
+            }
 
-        await bcrypt.hash(req.body.password, 8)
-            .then(hashedPassword => {
-                knex('users')
-                    .select()
-                    .where('email', req.body.email)
-                    .then(function (rows) {
-                        if (rows.length === 0) {
-                            knex("users")
-                                //.returning("id")
-                                .insert({
-                                    //id: "", 
-                                    email: req.body.email,
-                                    password: hashedPassword
-                                })// res.send( 'successful registration ' )
-                                .then((rows) => {
-                                    knex('profiles').insert({
-                                        user_id: rows
+            await bcrypt.hash(req.body.password, 8)
+                .then(hashedPassword => {
+                    knex('users')
+                        .select()
+                        .where('email', req.body.email)
+                        .then(function (rows) {
+                            if (rows.length === 0) {
+                                knex("users")
+                                    //.returning("id")
+                                    .insert({
+                                        //id: "", 
+                                        email: req.body.email,
+                                        password: hashedPassword
+                                    })// res.send( 'successful registration ' )
+                                    .then((rows) => {
+                                        knex('profiles').insert({
+                                            user_id: rows
+                                        })
+                                            .then(res.send({ status: 'successful registration' }))
                                     })
-                                        .then(res.send({ status: 'successful registration' }))
-                                })
 
-                        } else {
-                            return res.send({ status: ' email already in use ' })
-                        }
-                    })
-                    .catch(function (ex) {
-                        // you can find errors here.
-                        res.send({ status: ' err ' })
-                    })
-            })
-    } catch (err) {
-        return res.sendStatus(403)
-    }
-})
+                            } else {
+                                return res.send({ status: ' email already in use ' })
+                            }
+                        })
+                        .catch(function (ex) {
+                            // you can find errors here.
+                            res.send({ status: ' err ' })
+                        })
+                })
+        } catch (err) {
+            return res.sendStatus(403)
+        }
+    })
 
 
 router.post('/login', async (req, res) => {
