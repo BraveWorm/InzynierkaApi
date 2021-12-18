@@ -45,10 +45,10 @@ router.get('/statistics', authenticate, async (req, res) => {
 
         if (setsId == 0)
             return res.send({ status: 'User don\'t have any sets' })
-
-        var statistics = await setStatistics(setsId[0].id)
-
-        for (var i = 1; i < setsId.length; i++) {
+        
+        var statistics = {howManySets: setsId.length, learned: 0, unlearned: 0, allFlashcards: 0}
+        
+        for (var i = 0; i < setsId.length; i++) {
             statistics.learned += (await setStatistics(setsId[i].id)).learned
             statistics.unlearned += (await setStatistics(setsId[i].id)).unlearned
             statistics.allFlashcards += (await setStatistics(setsId[i].id)).allFlashcards

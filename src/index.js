@@ -35,19 +35,17 @@ app.use("/api/flashcards", flashcards);
 app.get('/api/', (req, res) => res.send('OK!'))
 
 // User
-app.get('/api/userInfo', authenticate,  async (req, res, next) => {
-    
-    if (!(JSON.parse(Buffer.from(req.headers['authorization'].split(".")[1], "base64url")).payload.email === req.body.email)) // Compare email from JWT and email from req
-    {
-        res.status(401).json({
-            error: "Unauthorized Access!"
-        })
-    } else {
+app.get('/api/userInfo', authenticate, async (req, res, next) => {
+    try {
         const users = await knex("users")
             .select('users.email', 'users.created_at', 'users.updated_at')
-            .where({ email: req.body.email })
+            .where({ id: req.user.payload.id })
 
         res.send(users)
+
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: "internal server error" })
     }
 })
 
@@ -55,20 +53,24 @@ app.get('/api/userInfo', authenticate,  async (req, res, next) => {
 //
 app.post("/api/isEmailFree", async (req, res) => {
 
-
-    return knex('users')
-        .select()
-        .where('email', req.body.email)
-        .then(function (rows) {
-            if (rows.length === 0) {
-                res.send( 'email free' )
-            } else {
-                res.send( 'email already in use' )
-            }
-        })
-        .catch(function (ex) {
-            res.send(' err ')
-        })
+    try {
+        return knex('users')
+            .select()
+            .where('email', req.body.email)
+            .then(function (rows) {
+                if (rows.length === 0) {
+                    res.send('email free')
+                } else {
+                    res.send('email already in use')
+                }
+            })
+            .catch(function (ex) {
+                res.send(' err ')
+            })
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: "internal server error" })
+    }
 })
 
 

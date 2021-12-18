@@ -9,22 +9,12 @@ content-type: application/json
 }
 
 
-###
-GET http://localhost:3001/api/userInfo
-content-type: application/json
 
-{
-    "email": "user1@test.com"
-}
 
 ###
 GET http://localhost:3001/api/userInfo
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImVtYWlsIjoidXNlcjNAdGVzdC5jb20ifSwiaWF0IjoxNjM3Nzk0MDcxLCJleHAiOjE2Mzc4ODA0NzF9.q6oUqLmRpJTXs8f67bmTeaY6CqHH-G_WCfwDvTyt8Xs
-content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImlkIjoxLCJlbWFpbCI6InVzZXIxQHRlc3QuY29tIn0sImlhdCI6MTYzOTY2NDY5MiwiZXhwIjoxNjM5NzUxMDkyfQ.YJtgHtiJ1lB-QgKEpAMiUjo8rjGGvtRcZlrd0kScClw
 
-{
-    "email": "user3@test.com"
-}
 
 
 ###
@@ -70,7 +60,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImlkI
 
 ###
 PUT  http://localhost:3001/api/profiles
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImlkIjozLCJlbWFpbCI6InVzZXIzQHRlc3QuY29tIn0sImlhdCI6MTYzODkxOTg4NiwiZXhwIjoxNjM5MDA2Mjg2fQ.rRPnh-chArIlOEJFYWdN5f7tgAZn8cfeQxklkxQWODQ
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImlkIjozLCJlbWFpbCI6InVzZXIzQHRlc3QuY29tIn0sImlhdCI6MTYzOTY2MTc1MSwiZXhwIjoxNjM5NzQ4MTUxfQ.Uirb2obAlOmBOWlThAkev6WfgA2gMTRNgNOWfwcJDfE
 content-type: application/json
 
 {
@@ -81,7 +71,7 @@ content-type: application/json
 
 ###
 POST   http://localhost:3001/api/sets/allUserSets
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImlkIjozLCJlbWFpbCI6InVzZXIzQHRlc3QuY29tIn0sImlhdCI6MTYzODkxMjQyNywiZXhwIjoxNjM4OTk4ODI3fQ.YsxNC1G8TK9S2YQ_aa4d3Nc32e3j9d5p7Upp2cUJkV8
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImlkIjozLCJlbWFpbCI6InVzZXIzQHRlc3QuY29tIn0sImlhdCI6MTYzOTY2MTc1MSwiZXhwIjoxNjM5NzQ4MTUxfQ.Uirb2obAlOmBOWlThAkev6WfgA2gMTRNgNOWfwcJDfE
 
 
 
@@ -99,12 +89,11 @@ content-type: application/json
 
 ###
 Post   http://localhost:3001/api/sets/set
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImlkIjozLCJlbWFpbCI6InVzZXIzQHRlc3QuY29tIn0sImlhdCI6MTYzODMxNDQ4MiwiZXhwIjoxNjM4NDAwODgyfQ.pFg3h9_MPiy3V-yc3-pDlPgi54Qjf3erg2JwT4Pv__s
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImlkIjoxLCJlbWFpbCI6InVzZXIxQHRlc3QuY29tIn0sImlhdCI6MTYzOTY2NDY5MiwiZXhwIjoxNjM5NzUxMDkyfQ.YJtgHtiJ1lB-QgKEpAMiUjo8rjGGvtRcZlrd0kScClw
 content-type: application/json
 
 {
-    "id": 3,
-    "email": "user3@test.com",
+    "id": 8,
     "setTitle": "setTitle3",
     "setDescription": null,
     "setPortion": null
@@ -112,12 +101,11 @@ content-type: application/json
 
 ###
 Post   http://localhost:3001/api/sets/set
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImlkIjozLCJlbWFpbCI6InVzZXIzQHRlc3QuY29tIn0sImlhdCI6MTYzODMxNDQ4MiwiZXhwIjoxNjM4NDAwODgyfQ.pFg3h9_MPiy3V-yc3-pDlPgi54Qjf3erg2JwT4Pv__s
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImlkIjoxLCJlbWFpbCI6InVzZXIxQHRlc3QuY29tIn0sImlhdCI6MTYzOTY2NDY5MiwiZXhwIjoxNjM5NzUxMDkyfQ.YJtgHtiJ1lB-QgKEpAMiUjo8rjGGvtRcZlrd0kScClw
 content-type: application/json
 
 {
-    "email": "user3@test.com",
-    "setTitle": "setTitle5",
+    "setTitle": "setTitle12",
     "setDescription": null
 }
 
@@ -254,11 +242,11 @@ content-type: application/json
 
 ###
 GET   http://localhost:3001/api/sets/setStatistics/8
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImlkIjozLCJlbWFpbCI6InVzZXIzQHRlc3QuY29tIn0sImlhdCI6MTYzODg4MzI5NCwiZXhwIjoxNjM4OTY5Njk0fQ.5L7wIDLnn1Hg543ZRiyDuRMXL6UV7m_BokbsVjQGpLQ
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImlkIjozLCJlbWFpbCI6InVzZXIzQHRlc3QuY29tIn0sImlhdCI6MTYzOTY2MTc1MSwiZXhwIjoxNjM5NzQ4MTUxfQ.Uirb2obAlOmBOWlThAkev6WfgA2gMTRNgNOWfwcJDfE
 
 ###
-PUT   http://localhost:3001/api/sets/setReset/8
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImlkIjozLCJlbWFpbCI6InVzZXIzQHRlc3QuY29tIn0sImlhdCI6MTYzODg4MzI5NCwiZXhwIjoxNjM4OTY5Njk0fQ.5L7wIDLnn1Hg543ZRiyDuRMXL6UV7m_BokbsVjQGpLQ
+PUT   http://localhost:3001/api/sets/setReset/11
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImlkIjoxLCJlbWFpbCI6InVzZXIxQHRlc3QuY29tIn0sImlhdCI6MTYzOTY5MDEzNSwiZXhwIjoxNjM5Nzc2NTM1fQ.U8YGC4jiwPuYM3irGBp1tpA4Z5VaixX9U5G5Sik-Ua0
 
 ###
 GET http://localhost:3001/api/profiles/statistics
