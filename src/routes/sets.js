@@ -5,11 +5,83 @@ import setStatistics from '../utils/setStatistics'
 const express = require("express")
 let router = express.Router();
 
+
+function getUserIdFromSets(setId) {
+    try {
+        return knex('sets').where({ id: setId }).select('user_id')
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: "internal server error" })
+    }
+}
+
+function getSetIdFromFlashcards(flashcardsId) {
+    try {
+        return knex('flashcards').select('set_id').where('id', flashcardsId)
+    } catch (error) {
+        console.error(error);
+        //return res.status(500).json({ error: "internal server error" })
+    }
+}
+
+async function inserUpdateFlashcards(req, rows, i) {
+    try {
+        if (!req.body.Flashcards[i].id) {
+            return knex('flashcards').insert({
+                front: req.body.Flashcards[i].front,
+                back: req.body.Flashcards[i].back,
+                set_id: rows
+            })
+            //.then(console.log('insert fc'))
+        }
+        else {
+            var SetIdFromFlashcards = await getSetIdFromFlashcards(req.body.Flashcards[i].id)
+            if (SetIdFromFlashcards[0].set_id !== rows)
+                return console.log('Unauthorized Access! Flashcard dont belongs to this set')
+
+            return knex('flashcards')
+                .where({ id: req.body.Flashcards[i].id })
+                .update({
+                    front: req.body.Flashcards[i].front,
+                    back: req.body.Flashcards[i].back
+                })
+            //.then(console.log('update fc', req.body.Flashcards[i].id))
+        }
+    } catch (error) {
+        console.error(error);
+        //return res.status(500).json({ error: "internal server error" })
+    }
+}
+
+async function addLength(set) {
+    try {
+        var setPlusLength = {
+            id: set.id,
+            setTitle: set.setTitle,
+            setDescription: set.setDescription,
+            length: (await knex('flashcards')
+            .select('*')
+            .where({ set_id: set.id })).length
+        }
+
+
+        return setPlusLength
+    } catch (error) {
+        console.error(error);
+    }
+}
+
 router.post("/allUserSets", authenticate, async (req, res) => {
     try {
-        const sets = await knex('sets')
+        var sets = await knex('sets')
             .select('sets.id', 'sets.setTitle', 'sets.setDescription')
             .where({ user_id: req.user.payload.id })
+
+        if (sets.length !== 0)
+            for (var i = 0; i < sets.length; i++) {
+                sets[i] = await addLength(sets[i])
+
+            }
 
         return res.send(sets)
     } catch (error) {
@@ -47,7 +119,7 @@ router.post("/set", authenticate, async (req, res) => {
                 })
                 .then(res.send({ status: 'sucesfull set insert' }))
         else {
-            var debug = await knex('sets').where({ id: req.body.id }).select('sets.user_id')    
+            var debug = await knex('sets').where({ id: req.body.id }).select('sets.user_id')
             if ((await knex('sets').where({ id: req.body.id }).select('sets.user_id'))[0].user_id !== req.user.payload.id)
                 return res.status(401).json({ error: "Unauthorized Access!" })
             return await knex('sets')
@@ -118,52 +190,6 @@ router.post("/setFlashcards", authenticate, async (req, res) => {
 
 
 
-function getUserIdFromSets(setId) {
-    try {
-        return knex('sets').where({ id: setId }).select('user_id')
-    } catch (error) {
-        console.error(error);
-        return res.status(500).json({ error: "internal server error" })
-    }
-}
-
-function getSetIdFromFlashcards(flashcardsId) {
-    try {
-        return knex('flashcards').select('set_id').where('id', flashcardsId)
-    } catch (error) {
-        console.error(error);
-        //return res.status(500).json({ error: "internal server error" })
-    }
-}
-
-async function inserUpdateFlashcards(req, rows, i) {
-    try {
-        if (!req.body.Flashcards[i].id) {
-            return knex('flashcards').insert({
-                front: req.body.Flashcards[i].front,
-                back: req.body.Flashcards[i].back,
-                set_id: rows
-            })
-            //.then(console.log('insert fc'))
-        }
-        else {
-            var SetIdFromFlashcards = await getSetIdFromFlashcards(req.body.Flashcards[i].id)
-            if (SetIdFromFlashcards[0].set_id !== rows)
-                return console.log('Unauthorized Access! Flashcard dont belongs to this set')
-
-            return knex('flashcards')
-                .where({ id: req.body.Flashcards[i].id })
-                .update({
-                    front: req.body.Flashcards[i].front,
-                    back: req.body.Flashcards[i].back
-                })
-            //.then(console.log('update fc', req.body.Flashcards[i].id))
-        }
-    } catch (error) {
-        console.error(error);
-        //return res.status(500).json({ error: "internal server error" })
-    }
-}
 
 
 router.delete('/setFlashcardsDelete/:setId', authenticate, async (req, res) => {
