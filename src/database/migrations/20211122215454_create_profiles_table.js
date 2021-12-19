@@ -3,7 +3,6 @@ exports.up = function(knex) {
     return knex.schema.createTable('profiles', (table) => {
         table.increments('id').primary()
         table.string('name')
-        table.string('avatar')
         table.text('description')
 
         table.integer('user_id').unsigned().unique().notNull()
