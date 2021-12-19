@@ -32,7 +32,7 @@ content-type: application/json
 
 {
     "email": "user5@test.com",
-    "password": "test"    
+    "password": "test1"    
 }
 
 
@@ -223,12 +223,12 @@ content-type: application/json
 
 ###
 POST http://localhost:3001/api/auth/password
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImlkIjozLCJlbWFpbCI6InVzZXIzQHRlc3QuY29tIn0sImlhdCI6MTYzODkyMjExMiwiZXhwIjoxNjM5MDA4NTEyfQ.6z5LBimkNjft-ZqEJ7pWXJcMjuU8Qe45zda0Ju7GlN0
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImlkIjoxLCJlbWFpbCI6InVzZXIxQHRlc3QuY29tIn0sImlhdCI6MTYzOTg3Mjg1NSwiZXhwIjoxNjM5OTU5MjU1fQ.sLwTd4u2tO0QPWnOSGU3KYCdRWUYo014ojuOa1qSpG8
 content-type: application/json
 
 {
-    "oldPassword": "user3passwordNew",
-    "newPassword": "user3password"
+    "oldPassword": "user1password",
+    "newPassword": "user1password"
 }
 
 ###
