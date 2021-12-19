@@ -64,7 +64,6 @@ router.get('/statistics', authenticate, async (req, res) => {
 
 router.post('/name', authenticate, async (req, res) => {
     try {
-        //console.log(req.params.setId)
         if (!req.body.name) return res.status(400).json({ error: "Bad Request!" });
 
         return await knex('profiles')
