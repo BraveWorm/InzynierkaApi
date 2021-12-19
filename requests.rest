@@ -65,7 +65,6 @@ content-type: application/json
 
 {
     "name": "name3",
-    "avatar": null,
     "description": "description3"
 }
 
@@ -202,14 +201,6 @@ content-type: application/json
     "name": "name1"
 }
 
-###
-POST http://localhost:3001/api/profiles/avatar
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImlkIjozLCJlbWFpbCI6InVzZXIzQHRlc3QuY29tIn0sImlhdCI6MTYzOTY2MTc1MSwiZXhwIjoxNjM5NzQ4MTUxfQ.Uirb2obAlOmBOWlThAkev6WfgA2gMTRNgNOWfwcJDfE
-content-type: application/json
-
-{
-    "avatar": "avatar1"
-}
 
 
 ###

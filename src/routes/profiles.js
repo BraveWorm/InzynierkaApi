@@ -6,12 +6,11 @@ const express = require("express")
 let router = express.Router();
 const { param, validationResult } = require('express-validator');
 
-// TODO: Delete avatar data base and code
 
 router.get("/", authenticate, async (req, res) => {
     try {
         const profile = await knex('profiles')
-            .select('profiles.name', 'profiles.avatar', 'profiles.description')
+            .select('profiles.name', 'profiles.description')
             .where({ user_id: knex('users').select('id').where({ id: req.user.payload.id }) })
 
         res.send(profile)
@@ -29,7 +28,6 @@ router.put("/", authenticate, async (req, res) => {
             .where({ user_id: req.user.payload.id })
             .update({
                 name: req.body.name,
-                avatar: req.body.avatar,
                 description: req.body.description
             })
             .then(res.send({ status: 'sucesfull profile insert' }))
@@ -79,23 +77,6 @@ router.post('/name', authenticate, async (req, res) => {
     }
 })
 
-router.post('/avatar', authenticate, async (req, res) => {
-    try {
-        //console.log(req.params.setId)
-        if (!req.body.avatar) return res.status(400).json({ error: "Bad Request!" });
-
-        return await knex('profiles')
-            .where({ user_id: req.user.payload.id })
-            .update({ avatar: req.body.avatar })
-            .then(res.send({ status: 'avatar updated' }))
-
-
-
-    } catch (error) {
-        console.error(error);
-        return res.status(500).json({ error: "internal server error" })
-    }
-})
 
 
 router.post('/description', authenticate, async (req, res) => {
