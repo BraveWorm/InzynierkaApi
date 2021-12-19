@@ -18,9 +18,6 @@ router.post("/registration",
                 return res.status(400).json({ errors: errors.array() });
             }
 
-            if (!req.body.password || !req.body.email) {
-                return res.status(400).json({ error: "Bad Request!" })
-            }
 
             await bcrypt.hash(req.body.password, 8)
                 .then(hashedPassword => {
@@ -44,7 +41,7 @@ router.post("/registration",
                                     })
 
                             } else {
-                                return res.send({ status: ' email already in use ' })
+                                return res.status(409).json({ status: ' email already in use ' })
                             }
                         })
                         .catch(function (ex) {
