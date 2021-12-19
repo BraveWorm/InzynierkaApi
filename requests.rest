@@ -32,7 +32,7 @@ content-type: application/json
 
 {
     "email": "user5@test.com",
-    "password": "test1"    
+    "password": "test1"
 }
 
 

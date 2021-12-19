@@ -41,7 +41,7 @@ router.post("/registration",
                                     })
 
                             } else {
-                                return res.status(409).json({ status: 'email already in use' })
+                                return res.status(409).json({ error: 'email already in use' })
                             }
                         })
                         .catch(function (ex) {
