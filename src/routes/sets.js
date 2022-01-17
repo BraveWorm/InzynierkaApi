@@ -1,5 +1,4 @@
 import knex from '../config/database'
-import jwt from 'jsonwebtoken'
 import authenticate from '../utils/authenticate'
 import setStatistics from '../utils/setStatistics'
 const express = require("express")
@@ -60,8 +59,8 @@ async function addLength(set) {
             setTitle: set.setTitle,
             setDescription: set.setDescription,
             length: (await knex('flashcards')
-            .select('*')
-            .where({ set_id: set.id })).length
+                .select('*')
+                .where({ set_id: set.id })).length
         }
 
 
@@ -229,7 +228,6 @@ router.get("/setStatistics/:setId", authenticate, async (req, res) => {
         const response = await setStatistics(req.params.setId)
 
         return res.send(Array.of(response))
-        //return res.send(sets)
 
     } catch (error) {
         console.error(error);
@@ -252,10 +250,6 @@ router.put("/setReset/:setId", authenticate, async (req, res) => {
             .update({ correctNumber: 0 })
             .where({ set_id: req.params.setId })
             .then(res.send({ status: 'successful update' }))
-
-
-
-
 
     } catch (error) {
         console.error(error);

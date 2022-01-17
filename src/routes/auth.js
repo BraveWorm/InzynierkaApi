@@ -27,12 +27,10 @@ router.post("/registration",
                         .then(function (rows) {
                             if (rows.length === 0) {
                                 knex("users")
-                                    //.returning("id")
                                     .insert({
-                                        //id: "", 
                                         email: req.body.email,
                                         password: hashedPassword
-                                    })// res.send( 'successful registration ' )
+                                    })
                                     .then((rows) => {
                                         knex('profiles').insert({
                                             user_id: rows
@@ -75,7 +73,8 @@ router.post('/login', async (req, res) => {
                                 })
                             } else {
                                 const payload = { id: users.id, email: users.email }
-                                const accessToken = jwt.sign({ payload }, process.env.TOKEN_SECRET, { expiresIn: 86400 })
+                                const accessToken = jwt.sign({ payload },
+                                    process.env.TOKEN_SECRET, { expiresIn: 86400 })
                                 res.send({ accessToken })
                             }
                         })
@@ -84,7 +83,6 @@ router.post('/login', async (req, res) => {
     } catch (err) {
         return res.sendStatus(403)
     }
-
 })
 
 // router.post('/refresh', async (req, res) => {

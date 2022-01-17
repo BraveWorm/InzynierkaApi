@@ -1,5 +1,4 @@
 import knex from '../config/database'
-import jwt from 'jsonwebtoken'
 import authenticate from '../utils/authenticate'
 import setStatistics from '../utils/setStatistics'
 const express = require("express")
@@ -15,7 +14,8 @@ router.post("/flashcardsToLearn", authenticate, async (req, res) => {
             .select('sets.user_id')
             .where({ id: req.body.set_id })
 
-        if (req.user.payload.id !== userIdFromSets[0].user_id) // Compare userID from JWT and userID from req
+        // Compare userID from JWT and userID from req
+        if (req.user.payload.id !== userIdFromSets[0].user_id)
             return res.status(401).json({ error: "Unauthorized Access!" })
 
 
