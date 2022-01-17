@@ -1,5 +1,4 @@
 import knex from '../config/database'
-import jwt from 'jsonwebtoken'
 import authenticate from '../utils/authenticate'
 import setStatistics from '../utils/setStatistics'
 const express = require("express")

@@ -31,7 +31,7 @@ POST  http://localhost:3001/api/auth/registration
 content-type: application/json
 
 {
-    "email": "user5@test.com",
+    "email": "user6@test.com",
     "password": "test1"
 }
 
@@ -50,7 +50,7 @@ POST  http://localhost:3001/api/isEmailFree
 content-type: application/json
 
 {
-    "email": "user13@test.com" 
+    "email": "user1@test.com" 
 }
 
 ###
@@ -167,12 +167,11 @@ content-type: application/json
 
 ###
 POST   http://localhost:3001/api/flashcards/flashcardsToLearn
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImlkIjozLCJlbWFpbCI6InVzZXIzQHRlc3QuY29tIn0sImlhdCI6MTYzODkxOTg4NiwiZXhwIjoxNjM5MDA2Mjg2fQ.rRPnh-chArIlOEJFYWdN5f7tgAZn8cfeQxklkxQWODQ
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImlkIjozLCJlbWFpbCI6InVzZXIzQHRlc3QuY29tIn0sImlhdCI6MTY0MTY3MTQ4MSwiZXhwIjoxNjQxNzU3ODgxfQ.C8gHgHZGtapwcM270-_ntGIrCCZvHMy8Gi9eMYZGj5I
 content-type: application/json
 
 {
-    "email": "user3@test.com",
-    "set_id": 8
+    "set_id": 3
 
 }
 
@@ -233,12 +232,24 @@ content-type: application/json
 }
 
 ###
-GET   http://localhost:3001/api/sets/setStatistics/1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImlkIjoxLCJlbWFpbCI6InVzZXIxQHRlc3QuY29tIn0sImlhdCI6MTYzOTkzNTM4NCwiZXhwIjoxNjQwMDIxNzg0fQ.NogzrykGg-U3ZkqAmyYfYu2MIthxuwLFo6Gt_GVmTuo
+GET   http://localhost:3001/api/sets/setStatistics/3
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImlkIjozLCJlbWFpbCI6InVzZXIzQHRlc3QuY29tIn0sImlhdCI6MTY0MTY5NzMyMiwiZXhwIjoxNjQxNzgzNzIyfQ.w3zpuehXV0fuqHn6E6Vx63doL31OOiw1MoUnBaMZL3g
+
+
+
+
+
+
+
+
+
+
+
+
 
 ###
-PUT   http://localhost:3001/api/sets/setReset/11
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImlkIjoxLCJlbWFpbCI6InVzZXIxQHRlc3QuY29tIn0sImlhdCI6MTYzOTY5MDEzNSwiZXhwIjoxNjM5Nzc2NTM1fQ.U8YGC4jiwPuYM3irGBp1tpA4Z5VaixX9U5G5Sik-Ua0
+PUT   http://localhost:3001/api/sets/setReset/3 OR 1=1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImlkIjozLCJlbWFpbCI6InVzZXIzQHRlc3QuY29tIn0sImlhdCI6MTY0MTY5NzMyMiwiZXhwIjoxNjQxNzgzNzIyfQ.w3zpuehXV0fuqHn6E6Vx63doL31OOiw1MoUnBaMZL3g
 
 ###
 GET http://localhost:3001/api/profiles/statistics
